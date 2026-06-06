@@ -1,10 +1,24 @@
+# ========== IMPORTS ==========
 import re
 import pickle
+import faiss
+import numpy as np
 from rank_bm25 import BM25Okapi
-from data import corpus
 from nltk.stem import SnowballStemmer
 from pathlib import Path
+from sentence_transformers import SentenceTransformer
 
+from data import corpus
+
+
+# ========== SHARED SETUP ==========
+# Lookup-Dict für beide Suchen
+id_to_entry = {}
+for entry in corpus:
+    id_to_entry[entry["doc_id"]] = entry
+
+
+# ========== BM25 SETUP ==========
 stemmer = SnowballStemmer("english")
 
 def preprocess(text: str) -> list[str]:
@@ -14,14 +28,8 @@ def preprocess(text: str) -> list[str]:
     tokens = [stemmer.stem(t) for t in tokens]
     return tokens
 
-def search(query: str, n: int = 5):
-    tokenized_query = preprocess(query)
-    results = bm25.get_top_n(tokenized_query, corpus, n=n)
-    return results
-
-
+# BM25-Index aufbauen
 tokenized_corpus = []
-
 for entry in corpus:
     title = entry["title"]
     abstract = " ".join(entry["abstract"])
@@ -29,29 +37,31 @@ for entry in corpus:
     tokens = preprocess(full_text)
     tokenized_corpus.append(tokens)
 
-
 bm25 = BM25Okapi(tokenized_corpus)
 
+# BM25 auf Disk speichern
 Path("results").mkdir(exist_ok=True)
 with open("results/bm25_index.pkl", "wb") as file:
     pickle.dump(bm25, file)
 
-queries = [
-    "A strong bias in the phage genome locations where the spacers were derived has been observed in many CRISPR subtypes that confer the immunity to phage.",
-    "ART substantially reduces infectiveness of HIV-positive people.",
-    "Citrullinated proteins externalized in neutrophil extracellular traps act indirectly to disrupt the inflammatory cycle.",
-    "Klf4 is not required for proper myeloid cell differentiation.",
-    "MICAL redox enzymes regulate actin dynamics.",
-    "Mice that lack Interferon-\u03b3 or its receptor are highly susceptible to experimental autoimmune myocarditis.",
-    "Physical activity level has no association with the difference in maximal oxygen consumption between black and white youth.",
-    "Physical activity level is associated with the difference in maximal oxygen consumption between black and white youth.", 
-    "Primary cervical cancer screening with HPV detection has lower longitudinal sensitivity than conventional cytology to detect cervical intraepithelial neoplasia grade 2.", 
-    "Primary cervical cytology screening with HPV detection has higher longitudinal sensitivity to detect severe cervical intraepithelial neoplasia than conventional cytology."
-    ]
 
-for q in queries:
-    print("\nQUERY:", q)
-    results = search(q)
+# ========== DENSE SETUP ==========
+model = SentenceTransformer("all-MiniLM-L6-v2")
+index = faiss.read_index("results/faiss_index.bin")
+doc_ids = np.load("results/corpus_doc_ids.npy")
 
-    for r in results:
-        print(f"- ({r['doc_id']}) {r['title']}")
+
+# ========== SEARCH FUNCTIONS ==========
+def search_bm25(query: str, n: int = 5):
+    tokenized_query = preprocess(query)
+    return bm25.get_top_n(tokenized_query, corpus, n=n)
+
+def search_dense(query: str, n: int = 5):
+    embedding = model.encode(query)
+    embedding = embedding.reshape(1, -1)
+    faiss.normalize_L2(embedding)
+
+    D, I = index.search(embedding, k=n)
+    hit_ids = doc_ids[I[0]]
+
+    return [id_to_entry[did] for did in hit_ids]

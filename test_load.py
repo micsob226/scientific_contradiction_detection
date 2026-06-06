@@ -16,7 +16,7 @@ print(embedding.shape)
 
 D, I = index.search(embedding, k=5)
 print("Scores:", D)
-print("Positionen:", I)
+print("Positions:", I)
 
 doc_ids = np.load("results/corpus_doc_ids.npy")
 hit_ids = doc_ids[I[0]]
@@ -29,7 +29,6 @@ for entry in corpus:
     doc_id = entry["doc_id"]
     id_to_entry[doc_id] = entry
 
-# Für jeden Treffer den Titel ausgeben
 for did in hit_ids:
     entry = id_to_entry[did]
     print(entry["title"])
