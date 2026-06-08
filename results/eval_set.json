@@ -2,81 +2,171 @@
   {
     "query": "A strong bias in the phage genome locations where the spacers were derived has been observed in many CRISPR subtypes that confer the immunity to phage.",
     "ground_truth": [
-      3512154,
-      26996935
+      {
+        "doc_id": 26996935,
+        "relevance": 2
+      },
+      {
+        "doc_id": 3512154,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "ART substantially reduces infectiveness of HIV-positive people.",
     "ground_truth": [
-      13899137,
-      13901073
+      {
+        "doc_id": 13899137,
+        "relevance": 2
+      },
+      {
+        "doc_id": 13901073,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "Citrullinated proteins externalized in neutrophil extracellular traps act indirectly to disrupt the inflammatory cycle.",
     "ground_truth": [
-      11328820,
-      30041340,
-      14853989
+      {
+        "doc_id": 11328820,
+        "relevance": 2
+      },
+      {
+        "doc_id": 30041340,
+        "relevance": 2
+      },
+      {
+        "doc_id": 14853989,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "Klf4 is not required for proper myeloid cell differentiation.",
     "ground_truth": [
-      6493422,
-      25148216
+      {
+        "doc_id": 25148216,
+        "relevance": 2
+      },
+      {
+        "doc_id": 6493422,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "MICAL redox enzymes regulate actin dynamics.",
     "ground_truth": [
-      16562534,
-      6609935,
-      33912020
+      {
+        "doc_id": 16562534,
+        "relevance": 2
+      },
+      {
+        "doc_id": 6609935,
+        "relevance": 2
+      },
+      {
+        "doc_id": 33912020,
+        "relevance": 2
+      }
     ]
   },
   {
     "query": "Mice that lack Interferon-\u03b3 or its receptor are highly susceptible to experimental autoimmune myocarditis.",
     "ground_truth": [
-      8246922,
-      24338780
+      {
+        "doc_id": 8246922,
+        "relevance": 2
+      },
+      {
+        "doc_id": 24338780,
+        "relevance": 2
+      }
     ]
   },
   {
     "query": "Physical activity level has no association with the difference in maximal oxygen consumption between black and white youth.",
     "ground_truth": [
-      8428935,
-      26112696,
-      4463588,
-      13083189
+      {
+        "doc_id": 8428935,
+        "relevance": 1
+      },
+      {
+        "doc_id": 26112696,
+        "relevance": 1
+      },
+      {
+        "doc_id": 4463588,
+        "relevance": 1
+      },
+      {
+        "doc_id": 13083189,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "Physical activity level is associated with the difference in maximal oxygen consumption between black and white youth.",
     "ground_truth": [
-      8428935,
-      26112696,
-      4463588,
-      13083189
+      {
+        "doc_id": 8428935,
+        "relevance": 1
+      },
+      {
+        "doc_id": 26112696,
+        "relevance": 1
+      },
+      {
+        "doc_id": 4463588,
+        "relevance": 1
+      },
+      {
+        "doc_id": 13083189,
+        "relevance": 1
+      }
     ]
   },
   {
     "query": "Primary cervical cancer screening with HPV detection has lower longitudinal sensitivity than conventional cytology to detect cervical intraepithelial neoplasia grade 2.",
     "ground_truth": [
-      46695481,
-      27873158,
-      28617573,
-      9764256
+      {
+        "doc_id": 46695481,
+        "relevance": 2
+      },
+      {
+        "doc_id": 27873158,
+        "relevance": 2
+      },
+      {
+        "doc_id": 28617573,
+        "relevance": 2
+      },
+      {
+        "doc_id": 9764256,
+        "relevance": 2
+      }
     ]
   },
   {
     "query": "Primary cervical cytology screening with HPV detection has higher longitudinal sensitivity to detect severe cervical intraepithelial neoplasia than conventional cytology.",
     "ground_truth": [
-      27446873,
-      27873158,
-      28617573,
-      9764256
+      {
+        "doc_id": 27446873,
+        "relevance": 2
+      },
+      {
+        "doc_id": 27873158,
+        "relevance": 2
+      },
+      {
+        "doc_id": 28617573,
+        "relevance": 2
+      },
+      {
+        "doc_id": 9764256,
+        "relevance": 2
+      }
     ]
   }
 ]

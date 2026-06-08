@@ -1,5 +1,17 @@
 from data import load_jsonl
+from retrieval import search_bm25, search_dense, search_reranked, search_tfidf
 import json
+import math
+
+
+def dcg(relevances):
+    return sum(rel / math.log2(i + 2) for i, rel in enumerate(relevances))
+
+
+def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
+    actual = dcg(retrieved_relevances[:k])
+    ideal = dcg(sorted(ground_truth_relevances, reverse=True)[:k])
+    return actual / ideal if ideal > 0 else 0.0
 
 
 queries = [
@@ -17,14 +29,80 @@ queries = [
 
 claims_train = load_jsonl("data/claims_train.jsonl")
 
-claim_to_truth = {}
+claim_to_info = {}
 for claim in claims_train:
-    claim_to_truth[claim["claim"]] = claim["cited_doc_ids"]
+    claim_to_info[claim["claim"]] = {
+        "evidence": claim["evidence"],
+        "cited_doc_ids": claim["cited_doc_ids"]
+    }
 
 eval_set = []
 for query in queries:
-    ground_truth = claim_to_truth[query]
-    eval_set.append({"query": query, "ground_truth": ground_truth})
+    info = claim_to_info[query]
+
+    ranked_truth = []
+    for doc_id in info["cited_doc_ids"]:
+        if str(doc_id) in info["evidence"]:
+            relevance = 2
+        else:
+            relevance = 1
+        ranked_truth.append({"doc_id": doc_id, "relevance": relevance})
+    ranked_truth.sort(key=lambda x: x["relevance"], reverse=True)
+    eval_set.append({"query": query, "ground_truth": ranked_truth})
 
 with open("results/eval_set.json", "w") as f:
     json.dump(eval_set, f, indent=2)
+
+
+ndcg_bm25 = []
+ndcg_dense = []
+ndcg_reranked = []
+ndcg_tfidf = []
+
+for item in eval_set:
+    query = item["query"]
+    ground_truth = item["ground_truth"]
+
+    # Lookup: doc_id → relevance
+    truth_lookup = {}
+    for entry in ground_truth:
+        truth_lookup[entry["doc_id"]] = entry["relevance"]
+
+    # Alle ground-truth Relevanzen (für IDCG)
+    all_relevances = [entry["relevance"] for entry in ground_truth]
+
+    # BM25 laufen lassen, Relevanzen extrahieren, nDCG
+    bm25_results = search_bm25(query, n=5)
+    bm25_rels = [truth_lookup.get(r["doc_id"], 0) for r in bm25_results]
+    score_bm25 = ndcg_at_k(bm25_rels, all_relevances, 5)
+    ndcg_bm25.append(score_bm25)
+
+    # FAISS dasselbe
+    dense_results = search_dense(query, n=5)
+    dense_rels = [truth_lookup.get(r["doc_id"], 0) for r in dense_results]
+    score_dense = ndcg_at_k(dense_rels, all_relevances, 5)
+    ndcg_dense.append(score_dense)
+
+    # Reranked dasselbe
+    reranked_results = search_reranked(query, n=5)
+    reranked_rels = [truth_lookup.get(r["doc_id"], 0) for r in reranked_results]
+    score_reranked = ndcg_at_k(reranked_rels, all_relevances, 5)
+    ndcg_reranked.append(score_reranked)
+
+    # TF-IDF dasselbe
+    tfidf_results = search_tfidf(query, n=5)
+    tfidf_rels = [truth_lookup.get(r["doc_id"], 0) for r in tfidf_results]
+    score_tfidf = ndcg_at_k(tfidf_rels, all_relevances, 5)
+    ndcg_tfidf.append(score_tfidf)
+
+
+# Mittelwerte
+avg_bm25 = sum(ndcg_bm25) / len(ndcg_bm25)
+avg_dense = sum(ndcg_dense) / len(ndcg_dense)
+avg_reranked = sum(ndcg_reranked) / len(ndcg_reranked)
+avg_tfidf = sum(ndcg_tfidf) / len(ndcg_tfidf)
+
+print(f"BM25  avg nDCG@5: {avg_bm25:.3f}")
+print(f"FAISS avg nDCG@5: {avg_dense:.3f}")
+print(f"Reranked avg nDCG@5: {avg_reranked:.3f}")
+print(f"TF-IDF avg nDCG@5: {avg_tfidf:.3f}")

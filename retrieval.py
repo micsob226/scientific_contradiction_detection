@@ -7,6 +7,9 @@ from rank_bm25 import BM25Okapi
 from nltk.stem import SnowballStemmer
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
+from sentence_transformers import CrossEncoder
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 from data import corpus
 
@@ -50,6 +53,13 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 index = faiss.read_index("results/faiss_index.bin")
 doc_ids = np.load("results/corpus_doc_ids.npy")
 
+cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+
+# ========== TF-IDF SETUP ==========
+tfidf_texts = [entry["title"] + " " + " ".join(entry["abstract"]) for entry in corpus]
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(tfidf_texts)
 
 # ========== SEARCH FUNCTIONS ==========
 def search_bm25(query: str, n: int = 5):
@@ -65,3 +75,17 @@ def search_dense(query: str, n: int = 5):
     hit_ids = doc_ids[I[0]]
 
     return [id_to_entry[did] for did in hit_ids]
+
+def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_dense(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
+
+def search_tfidf(query: str, n: int = 5):
+    query_vec = tfidf_vectorizer.transform([query])
+    scores = cosine_similarity(query_vec, tfidf_matrix)[0]
+    top_indices = np.argsort(scores)[::-1][:n]
+    return [corpus[i] for i in top_indices]
