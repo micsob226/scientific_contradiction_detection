@@ -49,11 +49,18 @@ with open("results/bm25_index.pkl", "wb") as file:
 
 
 # ========== DENSE SETUP ==========
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
 index = faiss.read_index("results/faiss_index.bin")
 doc_ids = np.load("results/corpus_doc_ids.npy")
 
-cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", device="cuda")
+
+
+# ========== SPECTER SETUP ==========
+# Benötigt: python embeddings_specter.py muss vorher gelaufen sein
+specter_model = SentenceTransformer("allenai/specter", device="cuda")
+specter_index = faiss.read_index("results/faiss_specter_index.bin")
+specter_doc_ids = np.load("results/corpus_specter_doc_ids.npy")
 
 
 # ========== TF-IDF SETUP ==========
@@ -62,6 +69,12 @@ tfidf_vectorizer = TfidfVectorizer()
 tfidf_matrix = tfidf_vectorizer.fit_transform(tfidf_texts)
 
 # ========== SEARCH FUNCTIONS ==========
+def search_tfidf(query: str, n: int = 5):
+    query_vec = tfidf_vectorizer.transform([query])
+    scores = cosine_similarity(query_vec, tfidf_matrix)[0]
+    top_indices = np.argsort(scores)[::-1][:n]
+    return [corpus[i] for i in top_indices]
+
 def search_bm25(query: str, n: int = 5):
     tokenized_query = preprocess(query)
     return bm25.get_top_n(tokenized_query, corpus, n=n)
@@ -70,11 +83,25 @@ def search_dense(query: str, n: int = 5):
     embedding = model.encode(query)
     embedding = embedding.reshape(1, -1)
     faiss.normalize_L2(embedding)
-
     D, I = index.search(embedding, k=n)
     hit_ids = doc_ids[I[0]]
-
     return [id_to_entry[did] for did in hit_ids]
+
+def search_specter(query: str, n: int = 5):
+    embedding = specter_model.encode(query, convert_to_numpy=True)
+    embedding = embedding.reshape(1, -1).astype(np.float32)
+    faiss.normalize_L2(embedding)
+    D, I = specter_index.search(embedding, k=n)
+    hit_ids = specter_doc_ids[I[0]]
+    return [id_to_entry[did] for did in hit_ids]
+
+def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_specter(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
 
 def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_dense(query, n=candidate_pool)
@@ -84,8 +111,18 @@ def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     scored.sort(key=lambda x: x[0], reverse=True)
     return [c for _, c in scored[:n]]
 
-def search_tfidf(query: str, n: int = 5):
-    query_vec = tfidf_vectorizer.transform([query])
-    scores = cosine_similarity(query_vec, tfidf_matrix)[0]
-    top_indices = np.argsort(scores)[::-1][:n]
-    return [corpus[i] for i in top_indices]
+def search_specter(query: str, n: int = 5):
+    embedding = specter_model.encode(query, convert_to_numpy=True)
+    embedding = embedding.reshape(1, -1).astype(np.float32)
+    faiss.normalize_L2(embedding)
+    D, I = specter_index.search(embedding, k=n)
+    hit_ids = specter_doc_ids[I[0]]
+    return [id_to_entry[did] for did in hit_ids]
+
+def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_specter(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
