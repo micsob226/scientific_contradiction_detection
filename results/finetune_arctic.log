@@ -1,0 +1,22 @@
+5183 809 300 300
+Training pairs: 919 aus 809 Claims
+Evaluator: 150 Queries gegen 5183 Docs
+
+===== Baseline (pretrained Arctic-embed-l-v2.0) =====
+Baseline alle Metriken: {'dev_monitor_cosine_accuracy@1': 0.5733333333333334, 'dev_monitor_cosine_accuracy@5': 0.76, 'dev_monitor_cosine_accuracy@10': 0.84, 'dev_monitor_cosine_precision@10': 0.09533333333333331, 'dev_monitor_cosine_recall@10': 0.8214444444444444, 'dev_monitor_cosine_ndcg@10': 0.6909737293641377, 'dev_monitor_cosine_mrr@10': 0.6598730158730158, 'dev_monitor_cosine_map@10': 0.6421677248677249}
+Baseline nDCG@10: 0.6910
+
+===== Training: 5 Epochs × 15 Steps =====
+{'eval_dev_monitor_cosine_accuracy@1': 0.6066666666666667, 'eval_dev_monitor_cosine_accuracy@5': 0.8333333333333334, 'eval_dev_monitor_cosine_accuracy@10': 0.88, 'eval_dev_monitor_cosine_precision@10': 0.10133333333333332, 'eval_dev_monitor_cosine_recall@10': 0.8720000000000001, 'eval_dev_monitor_cosine_ndcg@10': 0.7347174825898489, 'eval_dev_monitor_cosine_mrr@10': 0.7000343915343915, 'eval_dev_monitor_cosine_map@10': 0.6838793650793651, 'eval_runtime': 90.936, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 1.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.62, 'eval_dev_monitor_cosine_accuracy@5': 0.88, 'eval_dev_monitor_cosine_accuracy@10': 0.9066666666666666, 'eval_dev_monitor_cosine_precision@10': 0.10399999999999998, 'eval_dev_monitor_cosine_recall@10': 0.9006666666666666, 'eval_dev_monitor_cosine_ndcg@10': 0.7616366869936804, 'eval_dev_monitor_cosine_mrr@10': 0.723063492063492, 'eval_dev_monitor_cosine_map@10': 0.7109880952380953, 'eval_runtime': 91.0442, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 2.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.6266666666666667, 'eval_dev_monitor_cosine_accuracy@5': 0.8866666666666667, 'eval_dev_monitor_cosine_accuracy@10': 0.92, 'eval_dev_monitor_cosine_precision@10': 0.10533333333333332, 'eval_dev_monitor_cosine_recall@10': 0.9106666666666666, 'eval_dev_monitor_cosine_ndcg@10': 0.7709943809135503, 'eval_dev_monitor_cosine_mrr@10': 0.7318121693121693, 'eval_dev_monitor_cosine_map@10': 0.7201335978835979, 'eval_runtime': 91.1332, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 3.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.6333333333333333, 'eval_dev_monitor_cosine_accuracy@5': 0.8866666666666667, 'eval_dev_monitor_cosine_accuracy@10': 0.9266666666666666, 'eval_dev_monitor_cosine_precision@10': 0.10666666666666665, 'eval_dev_monitor_cosine_recall@10': 0.9186666666666667, 'eval_dev_monitor_cosine_ndcg@10': 0.778466756672435, 'eval_dev_monitor_cosine_mrr@10': 0.7387460317460317, 'eval_dev_monitor_cosine_map@10': 0.7276007936507937, 'eval_runtime': 91.1807, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 4.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.6333333333333333, 'eval_dev_monitor_cosine_accuracy@5': 0.8866666666666667, 'eval_dev_monitor_cosine_accuracy@10': 0.9266666666666666, 'eval_dev_monitor_cosine_precision@10': 0.10666666666666665, 'eval_dev_monitor_cosine_recall@10': 0.9186666666666667, 'eval_dev_monitor_cosine_ndcg@10': 0.778880864371139, 'eval_dev_monitor_cosine_mrr@10': 0.7391984126984126, 'eval_dev_monitor_cosine_map@10': 0.728067724867725, 'eval_runtime': 91.2787, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 5.0}
+{'train_runtime': 1364.539, 'train_samples_per_second': 3.367, 'train_steps_per_second': 0.055, 'train_loss': 0.24516995747884116, 'epoch': 5.0}
+
+===== Zusammenfassung =====
+Baseline nDCG@10:        0.6910
+Best fine-tuned nDCG@10: 0.7789
+Δ:                       +0.0879
+
+Alle finalen Metriken: {'dev_monitor_cosine_accuracy@1': 0.6333333333333333, 'dev_monitor_cosine_accuracy@5': 0.8866666666666667, 'dev_monitor_cosine_accuracy@10': 0.9266666666666666, 'dev_monitor_cosine_precision@10': 0.10666666666666665, 'dev_monitor_cosine_recall@10': 0.9186666666666667, 'dev_monitor_cosine_ndcg@10': 0.778880864371139, 'dev_monitor_cosine_mrr@10': 0.7391984126984126, 'dev_monitor_cosine_map@10': 0.728067724867725}
