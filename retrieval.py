@@ -71,6 +71,17 @@ bge_model = SentenceTransformer("BAAI/bge-large-en-v1.5", device="cuda")
 bge_index = faiss.read_index("results/indices/faiss_bge_index.bin")
 bge_doc_ids = np.load("results/indices/corpus_bge_doc_ids.npy")
 
+# BGE Fine-tuned
+bge_ft_model = SentenceTransformer("results/bge_finetuned", device="cuda")
+bge_ft_index = faiss.read_index("results/indices/faiss_bge_ft_index.bin")
+bge_ft_doc_ids = np.load("results/indices/corpus_bge_ft_doc_ids.npy")
+
+# MiniLM Fine-tuned
+minilm_ft_model = SentenceTransformer("results/minilm_finetuned", device="cuda")
+minilm_ft_index = faiss.read_index("results/indices/faiss_minilm_ft_index.bin")
+minilm_ft_doc_ids = np.load("results/indices/corpus_minilm_ft_doc_ids.npy")
+
+
 BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
@@ -142,6 +153,38 @@ def search_bge(query: str, n: int = 5):
 
 def search_bge_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_bge(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
+
+def search_bge_ft(query: str, n: int = 5):
+    query_with_prefix = BGE_QUERY_PREFIX + query
+    embedding = bge_ft_model.encode([query_with_prefix], convert_to_numpy=True).astype(np.float32)
+    faiss.normalize_L2(embedding)
+    D, I = bge_ft_index.search(embedding, k=n)
+    hit_ids = bge_ft_doc_ids[I[0]]
+    return [id_to_entry[did] for did in hit_ids]
+
+def search_bge_ft_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_bge_ft(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
+
+def search_minilm_ft(query: str, n: int = 5):
+    embedding = minilm_ft_model.encode(query)
+    embedding = embedding.reshape(1, -1)
+    faiss.normalize_L2(embedding)
+    D, I = minilm_ft_index.search(embedding, k=n)
+    hit_ids = minilm_ft_doc_ids[I[0]]
+    return [id_to_entry[did] for did in hit_ids]
+
+def search_minilm_ft_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_minilm_ft(query, n=candidate_pool)
     pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
     scores = cross_encoder.predict(pairs)
     scored = list(zip(scores, candidates))
