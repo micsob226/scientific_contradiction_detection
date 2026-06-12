@@ -13,7 +13,7 @@ doc_ids  = [entry["doc_id"] for entry in corpus]
 embedding = model.encode(texts)
 print(embedding.shape)
 
-results_dir = Path("results")
+results_dir = Path("results/indices")
 results_dir.mkdir(exist_ok=True)
 
 np.save(results_dir / "corpus_doc_ids.npy", doc_ids)

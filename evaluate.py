@@ -50,7 +50,7 @@ for query in queries:
     ranked_truth.sort(key=lambda x: x["relevance"], reverse=True)
     eval_set.append({"query": query, "ground_truth": ranked_truth})
 
-with open("results/eval_set.json", "w") as f:
+with open("data/eval_set.json", "w") as f:
     json.dump(eval_set, f, indent=2)
 
 

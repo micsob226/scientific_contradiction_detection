@@ -48,28 +48,28 @@ bm25 = BM25Okapi(tokenized_corpus)
 
 # BM25 auf Disk speichern
 Path("results").mkdir(exist_ok=True)
-with open("results/bm25_index.pkl", "wb") as file:
+with open("results/indices/bm25_index.pkl", "wb") as file:
     pickle.dump(bm25, file)
 
 
 # DENSE
 model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
-index = faiss.read_index("results/faiss_index.bin")
-doc_ids = np.load("results/corpus_doc_ids.npy")
+index = faiss.read_index("results/indices/faiss_index.bin")
+doc_ids = np.load("results/indices/corpus_doc_ids.npy")
 
 cross_encoder = CrossEncoder("mixedbread-ai/mxbai-rerank-large-v1")
 
 
 # SPECTER
 specter_model = SentenceTransformer("allenai/specter", device="cuda")
-specter_index = faiss.read_index("results/faiss_specter_index.bin")
-specter_doc_ids = np.load("results/corpus_specter_doc_ids.npy")
+specter_index = faiss.read_index("results/indices/faiss_specter_index.bin")
+specter_doc_ids = np.load("results/indices/corpus_specter_doc_ids.npy")
 
 
 # BGE
 bge_model = SentenceTransformer("BAAI/bge-large-en-v1.5", device="cuda")
-bge_index = faiss.read_index("results/faiss_bge_index.bin")
-bge_doc_ids = np.load("results/corpus_bge_doc_ids.npy")
+bge_index = faiss.read_index("results/indices/faiss_bge_index.bin")
+bge_doc_ids = np.load("results/indices/corpus_bge_doc_ids.npy")
 
 BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
