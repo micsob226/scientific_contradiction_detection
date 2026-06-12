@@ -1,5 +1,5 @@
 from data import load_jsonl
-from retrieval import search_bm25, search_dense, search_reranked, search_tfidf, search_specter, search_specter_reranked
+from retrieval import search_bm25, search_dense, search_reranked, search_tfidf, search_specter, search_specter_reranked, search_bge, search_bge_reranked
 import json
 import math
 
@@ -14,9 +14,26 @@ def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
     return actual / ideal if ideal > 0 else 0.0
 
 
+def average_precision(retrieved_relevances, total_relevant):
+    if total_relevant == 0:
+        return 0.0
+    relevant_count = 0
+    precision_sum = 0.0
+    for i, rel in enumerate(retrieved_relevances):
+        if rel > 0:
+            relevant_count += 1
+            precision_sum += relevant_count / (i + 1)
+    return precision_sum / total_relevant
+
+
+def recall_at_k(retrieved_relevances, total_relevant, k):
+    if total_relevant == 0:
+        return 0.0
+    return sum(1 for r in retrieved_relevances[:k] if r > 0) / total_relevant
+
+
 claims_train = load_jsonl("data/claims_train.jsonl")
 
-# Eval-Set direkt aus claims_train bauen, Claims ohne cited_doc_ids überspringen
 eval_set = []
 for claim in claims_train:
     if not claim["cited_doc_ids"]:
@@ -33,59 +50,43 @@ with open("results/eval_set.json", "w") as f:
 
 print(f"Evaluating on {len(eval_set)} claims...")
 
-ndcg_tfidf = []
-ndcg_bm25 = []
-ndcg_dense = []
-ndcg_reranked = []
-ndcg_specter = []
-ndcg_specter_reranked = []
+K = 10
+
+search_fns = {
+    "TF-IDF":           search_tfidf,
+    "BM25":             search_bm25,
+    "FAISS":            search_dense,
+    "FAISS+Reranked":   search_reranked,
+    "SPECTER":          search_specter,
+    "SPECTER+Reranked": search_specter_reranked,
+    "BGE":              search_bge,
+    "BGE+Reranked":     search_bge_reranked,
+}
+
+results = {name: {"ndcg": [], "ap": [], "recall": []} for name in search_fns}
 
 for i, item in enumerate(eval_set):
     query = item["query"]
     ground_truth = item["ground_truth"]
-
     truth_lookup = {entry["doc_id"]: entry["relevance"] for entry in ground_truth}
     all_relevances = [entry["relevance"] for entry in ground_truth]
+    total_relevant = len(ground_truth)
 
-    tfidf_results = search_tfidf(query, n=5)
-    tfidf_rels = [truth_lookup.get(r["doc_id"], 0) for r in tfidf_results]
-    ndcg_tfidf.append(ndcg_at_k(tfidf_rels, all_relevances, 5))
-
-    bm25_results = search_bm25(query, n=5)
-    bm25_rels = [truth_lookup.get(r["doc_id"], 0) for r in bm25_results]
-    ndcg_bm25.append(ndcg_at_k(bm25_rels, all_relevances, 5))
-
-    dense_results = search_dense(query, n=5)
-    dense_rels = [truth_lookup.get(r["doc_id"], 0) for r in dense_results]
-    ndcg_dense.append(ndcg_at_k(dense_rels, all_relevances, 5))
-
-    reranked_results = search_reranked(query, n=5)
-    reranked_rels = [truth_lookup.get(r["doc_id"], 0) for r in reranked_results]
-    ndcg_reranked.append(ndcg_at_k(reranked_rels, all_relevances, 5))
-
-    specter_results = search_specter(query, n=5)
-    specter_rels = [truth_lookup.get(r["doc_id"], 0) for r in specter_results]
-    ndcg_specter.append(ndcg_at_k(specter_rels, all_relevances, 5))
-
-    specter_reranked_results = search_specter_reranked(query, n=5)
-    specter_reranked_rels = [truth_lookup.get(r["doc_id"], 0) for r in specter_reranked_results]
-    ndcg_specter_reranked.append(ndcg_at_k(specter_reranked_rels, all_relevances, 5))
+    for name, fn in search_fns.items():
+        retrieved = fn(query, n=K)
+        rels = [truth_lookup.get(r["doc_id"], 0) for r in retrieved]
+        results[name]["ndcg"].append(ndcg_at_k(rels, all_relevances, K))
+        results[name]["ap"].append(average_precision(rels, total_relevant))
+        results[name]["recall"].append(recall_at_k(rels, total_relevant, K))
 
     if (i + 1) % 50 == 0:
         print(f"  {i + 1}/{len(eval_set)} done...")
 
 
-avg_tfidf = sum(ndcg_tfidf) / len(ndcg_tfidf)
-avg_bm25 = sum(ndcg_bm25) / len(ndcg_bm25)
-avg_dense = sum(ndcg_dense) / len(ndcg_dense)
-avg_reranked = sum(ndcg_reranked) / len(ndcg_reranked)
-avg_specter = sum(ndcg_specter) / len(ndcg_specter)
-avg_specter_reranked = sum(ndcg_specter_reranked) / len(ndcg_specter_reranked)
-
-
-print(f"Reranked avg nDCG@5: {avg_reranked:.3f}")
-print(f"BM25     avg nDCG@5: {avg_bm25:.3f}")
-print(f"TF-IDF   avg nDCG@5: {avg_tfidf:.3f}")
-print(f"FAISS    avg nDCG@5: {avg_dense:.3f}")
-print(f"SPECTER          avg nDCG@5: {avg_specter:.3f}")
-print(f"SPECTER+Reranked avg nDCG@5: {avg_specter_reranked:.3f}")
+print(f"\n{'Method':<20} {'nDCG@'+str(K):>10} {'MAP':>10} {'Recall@'+str(K):>12}")
+print("-" * 55)
+for name in search_fns:
+    avg_ndcg   = sum(results[name]["ndcg"])   / len(results[name]["ndcg"])
+    avg_ap     = sum(results[name]["ap"])     / len(results[name]["ap"])
+    avg_recall = sum(results[name]["recall"]) / len(results[name]["recall"])
+    print(f"{name:<20} {avg_ndcg:>10.3f} {avg_ap:>10.3f} {avg_recall:>12.3f}")
