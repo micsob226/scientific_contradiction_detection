@@ -21,6 +21,12 @@ for entry in corpus:
     id_to_entry[entry["doc_id"]] = entry
 
 
+# ========== TF-IDF SETUP ==========
+tfidf_texts = [entry["title"] + " " + " ".join(entry["abstract"]) for entry in corpus]
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(tfidf_texts)
+
+
 # ========== BM25 SETUP ==========
 stemmer = SnowballStemmer("english")
 
@@ -63,10 +69,13 @@ specter_index = faiss.read_index("results/faiss_specter_index.bin")
 specter_doc_ids = np.load("results/corpus_specter_doc_ids.npy")
 
 
-# ========== TF-IDF SETUP ==========
-tfidf_texts = [entry["title"] + " " + " ".join(entry["abstract"]) for entry in corpus]
-tfidf_vectorizer = TfidfVectorizer()
-tfidf_matrix = tfidf_vectorizer.fit_transform(tfidf_texts)
+# ========== BGE SETUP ==========
+bge_model = SentenceTransformer("BAAI/bge-large-en-v1.5", device="cuda")
+bge_index = faiss.read_index("results/faiss_bge_index.bin")
+bge_doc_ids = np.load("results/corpus_bge_doc_ids.npy")
+
+BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
+
 
 # ========== SEARCH FUNCTIONS ==========
 def search_tfidf(query: str, n: int = 5):
@@ -121,6 +130,22 @@ def search_specter(query: str, n: int = 5):
 
 def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_specter(query, n=candidate_pool)
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    scored = list(zip(scores, candidates))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [c for _, c in scored[:n]]
+
+def search_bge(query: str, n: int = 5):
+    query_with_prefix = BGE_QUERY_PREFIX + query
+    embedding = bge_model.encode([query_with_prefix], convert_to_numpy=True).astype(np.float32)
+    faiss.normalize_L2(embedding)
+    D, I = bge_index.search(embedding, k=n)
+    hit_ids = bge_doc_ids[I[0]]
+    return [id_to_entry[did] for did in hit_ids]
+
+def search_bge_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_bge(query, n=candidate_pool)
     pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
     scores = cross_encoder.predict(pairs)
     scored = list(zip(scores, candidates))
