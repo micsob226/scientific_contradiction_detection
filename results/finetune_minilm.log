@@ -1,0 +1,22 @@
+5183 809 300 300
+Training pairs: 919 aus 809 Claims
+Evaluator: 150 Queries gegen 5183 Docs
+
+===== Baseline (pretrained MiniLM) =====
+Baseline alle Metriken: {'dev_monitor_cosine_accuracy@1': 0.5, 'dev_monitor_cosine_accuracy@5': 0.7266666666666667, 'dev_monitor_cosine_accuracy@10': 0.7733333333333333, 'dev_monitor_cosine_precision@10': 0.08933333333333332, 'dev_monitor_cosine_recall@10': 0.761, 'dev_monitor_cosine_ndcg@10': 0.632250831864776, 'dev_monitor_cosine_mrr@10': 0.594, 'dev_monitor_cosine_map@10': 0.585776455026455}
+Baseline nDCG@10: 0.6323
+
+===== Training: 5 Epochs × 29 Steps =====
+{'eval_dev_monitor_cosine_accuracy@1': 0.52, 'eval_dev_monitor_cosine_accuracy@5': 0.7333333333333333, 'eval_dev_monitor_cosine_accuracy@10': 0.7933333333333333, 'eval_dev_monitor_cosine_precision@10': 0.09199999999999998, 'eval_dev_monitor_cosine_recall@10': 0.7893333333333333, 'eval_dev_monitor_cosine_ndcg@10': 0.6515652889962519, 'eval_dev_monitor_cosine_mrr@10': 0.6095634920634923, 'eval_dev_monitor_cosine_map@10': 0.604191798941799, 'eval_runtime': 8.4411, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 1.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.5266666666666666, 'eval_dev_monitor_cosine_accuracy@5': 0.76, 'eval_dev_monitor_cosine_accuracy@10': 0.8266666666666667, 'eval_dev_monitor_cosine_precision@10': 0.09466666666666665, 'eval_dev_monitor_cosine_recall@10': 0.8180000000000001, 'eval_dev_monitor_cosine_ndcg@10': 0.6629525586509163, 'eval_dev_monitor_cosine_mrr@10': 0.6179523809523811, 'eval_dev_monitor_cosine_map@10': 0.609711111111111, 'eval_runtime': 8.4838, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 2.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.5266666666666666, 'eval_dev_monitor_cosine_accuracy@5': 0.76, 'eval_dev_monitor_cosine_accuracy@10': 0.8466666666666667, 'eval_dev_monitor_cosine_precision@10': 0.09733333333333331, 'eval_dev_monitor_cosine_recall@10': 0.8360000000000001, 'eval_dev_monitor_cosine_ndcg@10': 0.6757902764002519, 'eval_dev_monitor_cosine_mrr@10': 0.6282195767195768, 'eval_dev_monitor_cosine_map@10': 0.6200867724867725, 'eval_runtime': 8.4627, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 3.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.5266666666666666, 'eval_dev_monitor_cosine_accuracy@5': 0.7466666666666667, 'eval_dev_monitor_cosine_accuracy@10': 0.8466666666666667, 'eval_dev_monitor_cosine_precision@10': 0.09733333333333331, 'eval_dev_monitor_cosine_recall@10': 0.8360000000000001, 'eval_dev_monitor_cosine_ndcg@10': 0.6743762224739178, 'eval_dev_monitor_cosine_mrr@10': 0.6273306878306879, 'eval_dev_monitor_cosine_map@10': 0.6181436507936507, 'eval_runtime': 8.4564, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 4.0}
+{'eval_dev_monitor_cosine_accuracy@1': 0.5266666666666666, 'eval_dev_monitor_cosine_accuracy@5': 0.7533333333333333, 'eval_dev_monitor_cosine_accuracy@10': 0.84, 'eval_dev_monitor_cosine_precision@10': 0.09599999999999997, 'eval_dev_monitor_cosine_recall@10': 0.8313333333333334, 'eval_dev_monitor_cosine_ndcg@10': 0.6737874736484215, 'eval_dev_monitor_cosine_mrr@10': 0.6282089947089948, 'eval_dev_monitor_cosine_map@10': 0.6190291005291005, 'eval_runtime': 8.3902, 'eval_samples_per_second': 0.0, 'eval_steps_per_second': 0.0, 'epoch': 5.0}
+{'train_runtime': 129.5874, 'train_samples_per_second': 35.459, 'train_steps_per_second': 1.119, 'train_loss': 0.18202001637425916, 'epoch': 5.0}
+
+===== Zusammenfassung =====
+Baseline nDCG@10:        0.6323
+Best fine-tuned nDCG@10: 0.6758
+Δ:                       +0.0435
+
+Alle finalen Metriken: {'dev_monitor_cosine_accuracy@1': 0.5266666666666666, 'dev_monitor_cosine_accuracy@5': 0.76, 'dev_monitor_cosine_accuracy@10': 0.8466666666666667, 'dev_monitor_cosine_precision@10': 0.09733333333333331, 'dev_monitor_cosine_recall@10': 0.8360000000000001, 'dev_monitor_cosine_ndcg@10': 0.6757902764002519, 'dev_monitor_cosine_mrr@10': 0.6282195767195768, 'dev_monitor_cosine_map@10': 0.6200867724867725}

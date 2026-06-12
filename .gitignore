@@ -9,3 +9,6 @@ wheels/
 # Virtual environments
 .venv
 checkpoints/
+results/minilm_finetuned/
+results/arctic_finetuned/
+results/bge_finetuned/
