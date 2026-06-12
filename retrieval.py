@@ -59,7 +59,7 @@ model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
 index = faiss.read_index("results/faiss_index.bin")
 doc_ids = np.load("results/corpus_doc_ids.npy")
 
-cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", device="cuda")
+cross_encoder = CrossEncoder("mixedbread-ai/mxbai-rerank-large-v1")
 
 
 # ========== SPECTER SETUP ==========
