@@ -1,0 +1,14 @@
+5183 809 300 300
+Loading Arctic-embed-l-v2.0 (might take a few minutes on first run)...
+
+Encoding 5183 documents...
+Embeddings shape: (5183, 1024)
+
+Evaluating on 150 dev_monitor claims...
+
+RESULT
+Arctic-embed-l-v2.0 nDCG@10 on dev_monitor: 0.6937
+BGE-Large (Baseline)        on dev_monitor: 0.7046
+BGE-Large (Fine-tuned)      on dev_monitor: 0.7663
+Δ vs BGE-Baseline: -0.0109
+Δ vs BGE-FT:       -0.0726

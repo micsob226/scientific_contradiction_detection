@@ -7,12 +7,10 @@ import math
 def dcg(relevances):
     return sum(rel / math.log2(i + 2) for i, rel in enumerate(relevances))
 
-
 def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
     actual = dcg(retrieved_relevances[:k])
     ideal = dcg(sorted(ground_truth_relevances, reverse=True)[:k])
     return actual / ideal if ideal > 0 else 0.0
-
 
 def average_precision(retrieved_relevances, total_relevant):
     if total_relevant == 0:
@@ -25,12 +23,10 @@ def average_precision(retrieved_relevances, total_relevant):
             precision_sum += relevant_count / (i + 1)
     return precision_sum / total_relevant
 
-
 def recall_at_k(retrieved_relevances, total_relevant, k):
     if total_relevant == 0:
         return 0.0
     return sum(1 for r in retrieved_relevances[:k] if r > 0) / total_relevant
-
 
 claims_train = load_jsonl("data/claims_train.jsonl")
 
@@ -80,7 +76,7 @@ for i, item in enumerate(eval_set):
         results[name]["recall"].append(recall_at_k(rels, total_relevant, K))
 
     if (i + 1) % 50 == 0:
-        print(f"  {i + 1}/{len(eval_set)} done...")
+        print(f"  {i + 1}/{len(eval_set)} done")
 
 
 print(f"\n{'Method':<20} {'nDCG@'+str(K):>10} {'MAP':>10} {'Recall@'+str(K):>12}")

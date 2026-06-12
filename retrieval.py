@@ -1,4 +1,3 @@
-# ========== IMPORTS ==========
 import re
 import pickle
 import faiss
@@ -14,20 +13,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 from data import corpus
 
 
-# ========== SHARED SETUP ==========
-# Lookup-Dict für beide Suchen
+
 id_to_entry = {}
 for entry in corpus:
     id_to_entry[entry["doc_id"]] = entry
 
 
-# ========== TF-IDF SETUP ==========
+# TF-IDF
 tfidf_texts = [entry["title"] + " " + " ".join(entry["abstract"]) for entry in corpus]
 tfidf_vectorizer = TfidfVectorizer()
 tfidf_matrix = tfidf_vectorizer.fit_transform(tfidf_texts)
 
 
-# ========== BM25 SETUP ==========
+# BM25
 stemmer = SnowballStemmer("english")
 
 def preprocess(text: str) -> list[str]:
@@ -37,7 +35,7 @@ def preprocess(text: str) -> list[str]:
     tokens = [stemmer.stem(t) for t in tokens]
     return tokens
 
-# BM25-Index aufbauen
+# BM25-Index
 tokenized_corpus = []
 for entry in corpus:
     title = entry["title"]
@@ -54,7 +52,7 @@ with open("results/bm25_index.pkl", "wb") as file:
     pickle.dump(bm25, file)
 
 
-# ========== DENSE SETUP ==========
+# DENSE
 model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
 index = faiss.read_index("results/faiss_index.bin")
 doc_ids = np.load("results/corpus_doc_ids.npy")
@@ -62,14 +60,13 @@ doc_ids = np.load("results/corpus_doc_ids.npy")
 cross_encoder = CrossEncoder("mixedbread-ai/mxbai-rerank-large-v1")
 
 
-# ========== SPECTER SETUP ==========
-# Benötigt: python embeddings_specter.py muss vorher gelaufen sein
+# SPECTER
 specter_model = SentenceTransformer("allenai/specter", device="cuda")
 specter_index = faiss.read_index("results/faiss_specter_index.bin")
 specter_doc_ids = np.load("results/corpus_specter_doc_ids.npy")
 
 
-# ========== BGE SETUP ==========
+# BGE
 bge_model = SentenceTransformer("BAAI/bge-large-en-v1.5", device="cuda")
 bge_index = faiss.read_index("results/faiss_bge_index.bin")
 bge_doc_ids = np.load("results/corpus_bge_doc_ids.npy")
@@ -77,7 +74,6 @@ bge_doc_ids = np.load("results/corpus_bge_doc_ids.npy")
 BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
-# ========== SEARCH FUNCTIONS ==========
 def search_tfidf(query: str, n: int = 5):
     query_vec = tfidf_vectorizer.transform([query])
     scores = cosine_similarity(query_vec, tfidf_matrix)[0]

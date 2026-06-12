@@ -7,14 +7,12 @@ BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
 def main():
-    # ===== Daten laden =====
     corpus = load_jsonl("data/corpus.jsonl")
     corpus_lookup = {entry["doc_id"]: entry for entry in corpus}
 
     claims_train = load_jsonl("data/claims_train.jsonl")
     monitor_claims = load_jsonl("data/claims_dev_monitor.jsonl")
 
-    # ===== Trainings-Paare bauen =====
     train_examples = []
     for claim in claims_train:
         if not claim.get("cited_doc_ids"):
@@ -29,7 +27,6 @@ def main():
 
     print(f"Training pairs: {len(train_examples)} aus {len(claims_train)} Claims")
 
-    # ===== Evaluator auf dev_monitor =====
     queries = {}
     relevant_docs = {}
     for claim in monitor_claims:
@@ -44,7 +41,7 @@ def main():
         for entry in corpus
     }
 
-    print(f"Evaluator: {len(queries)} Queries gegen {len(corpus_dict)} Docs")
+    print(f"Evaluator: {len(queries)} Queries against {len(corpus_dict)} Docs")
 
     evaluator = InformationRetrievalEvaluator(
         queries=queries,
@@ -59,7 +56,6 @@ def main():
         map_at_k=[10],
     )
 
-    # ===== Modell setup =====
     model = SentenceTransformer("BAAI/bge-large-en-v1.5", device="cuda")
     model.max_seq_length = 512
 
@@ -72,16 +68,14 @@ def main():
 
     output_path = "results/bge_finetuned"
 
-# ===== Baseline messen =====
-    print("\n===== Baseline (pretrained BGE-Large) =====")
+    print("\n____Baseline (pretrained BGE-Large)____")
     baseline_scores = evaluator(model)
-    print(f"Baseline alle Metriken: {baseline_scores}")
+    print(f"Baseline all Metrics: {baseline_scores}")
     ndcg_key = next(k for k in baseline_scores if "ndcg@10" in k)
     baseline_ndcg = baseline_scores[ndcg_key]
     print(f"Baseline nDCG@10: {baseline_ndcg:.4f}")
 
-    # ===== Training =====
-    print(f"\n===== Training: {num_epochs} Epochs × {steps_per_epoch} Steps =====")
+    print(f"\n Training: {num_epochs} Epochs × {steps_per_epoch} Steps")
     model.fit(
         train_objectives=[(train_dataloader, train_loss)],
         evaluator=evaluator,
@@ -95,11 +89,10 @@ def main():
         show_progress_bar=True,
     )
 
-# ===== Finale Messung auf best model =====
     best_model = SentenceTransformer(output_path, device="cuda")
     final_scores = evaluator(best_model)
     final_ndcg = final_scores[ndcg_key]
-    print(f"\n===== Zusammenfassung =====")
+    print(f"\n____Summary____")
     print(f"Baseline nDCG@10:        {baseline_ndcg:.4f}")
     print(f"Best fine-tuned nDCG@10: {final_ndcg:.4f}")
     print(f"Δ:                       {final_ndcg - baseline_ndcg:+.4f}")
