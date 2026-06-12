@@ -1,0 +1,1416 @@
+[
+  {
+    "query": "Ubiquitin ligase UBC13 generates a K63-linked polyubiquitin moiety at PCNA K164.",
+    "ground_truth": [
+      {
+        "doc_id": 20231138,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Diabetic patients with acute coronary syndrome experience increased short-term and long-term risk for bleeding events.",
+    "ground_truth": [
+      {
+        "doc_id": 5884524,
+        "relevance": 2
+      },
+      {
+        "doc_id": 7873737,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Subcutaneous fat depots undergo extensive browning processes after cold exposure.",
+    "ground_truth": [
+      {
+        "doc_id": 20532591,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Female carriers of the Apolipoprotein E4 (APOE4) allele have increased risk for dementia.",
+    "ground_truth": [
+      {
+        "doc_id": 6309659,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "PPAR-RXRs can be activated by PPAR ligands.",
+    "ground_truth": [
+      {
+        "doc_id": 3203590,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "NR5A2 is important in development of endometrial tissues.",
+    "ground_truth": [
+      {
+        "doc_id": 15928989,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Assembly of invadopodia is triggered by focal generation of phosphatidylinositol-3,4-biphosphate and the activation of the nonreceptor tyrosine kinase Src.",
+    "ground_truth": [
+      {
+        "doc_id": 16280642,
+        "relevance": 2
+      },
+      {
+        "doc_id": 38485364,
+        "relevance": 1
+      },
+      {
+        "doc_id": 6969753,
+        "relevance": 1
+      },
+      {
+        "doc_id": 17934082,
+        "relevance": 1
+      },
+      {
+        "doc_id": 12640810,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "1/2000 in UK have abnormal PrP positivity.",
+    "ground_truth": [
+      {
+        "doc_id": 13734012,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Ivermectin is used to treat lymphatic filariasis.",
+    "ground_truth": [
+      {
+        "doc_id": 1215116,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Commelina yellow mottle virus' (ComYMV) genome consists of 7489 baise pairs.",
+    "ground_truth": [
+      {
+        "doc_id": 14376683,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The one-child policy has been successful in lowering population growth.",
+    "ground_truth": [
+      {
+        "doc_id": 7662395,
+        "relevance": 1
+      },
+      {
+        "doc_id": 7662395,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "UCB T cells reduce TCR diversity after transplantation.",
+    "ground_truth": [
+      {
+        "doc_id": 27910499,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Mice defective for deoxyribonucleic acid (DNA) polymerase I (polI) reveal increased sensitivity to ionizing radiation (IR).",
+    "ground_truth": [
+      {
+        "doc_id": 32275758,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "The ureABIEFGH gene cluster is induced by nickel (II) ion.",
+    "ground_truth": [
+      {
+        "doc_id": 4387784,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "HNF4A mutations can cause diabetes in mutant carriers by the age of 14 years",
+    "ground_truth": [
+      {
+        "doc_id": 56893404,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "PPAR-RXRs are inhibited by PPAR ligands.",
+    "ground_truth": [
+      {
+        "doc_id": 3203590,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Low expression of miR7a exerts a biological function in testis.",
+    "ground_truth": [
+      {
+        "doc_id": 18421962,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Histone demethylase recruitment and a transient decrease in histone methylation is necessary for ligand-dependent induction of transcription by nuclear receptors.",
+    "ground_truth": [
+      {
+        "doc_id": 13639330,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The genomic aberrations found in matasteses are very similar to those found in the primary tumor.",
+    "ground_truth": [
+      {
+        "doc_id": 19736671,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Macrolides protect against myocardial infarction.",
+    "ground_truth": [
+      {
+        "doc_id": 32159283,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Blocking the interaction between TDP-43 and respiratory complex I proteins ND3 and ND6 leads to increased TDP-43-induced neuronal loss.",
+    "ground_truth": [
+      {
+        "doc_id": 16966326,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Aspirin inhibits the production of PGE2.",
+    "ground_truth": [
+      {
+        "doc_id": 7975937,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "mTORC2 regulates intracellular cysteine levels through xCT inhibition.",
+    "ground_truth": [
+      {
+        "doc_id": 23895668,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Antiretroviral therapy reduces rates of tuberculosis across a broad range of CD4 strata.",
+    "ground_truth": [
+      {
+        "doc_id": 4883040,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "In mouse models, the loss of CSF1R facilitates MOZ-TIF2-induced leuekmogenesis.",
+    "ground_truth": [
+      {
+        "doc_id": 8764879,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Incidence rates of cervical cancer have decreased.",
+    "ground_truth": [
+      {
+        "doc_id": 12779444,
+        "relevance": 2
+      },
+      {
+        "doc_id": 36355784,
+        "relevance": 2
+      },
+      {
+        "doc_id": 25742130,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "New drugs for tuberculosis often do not penetrate the necrotic portion of a tuberculosis lesion in high concentrations.",
+    "ground_truth": [
+      {
+        "doc_id": 16787954,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Proteins synthesized at the growth cone are ubiquitinated at a higher rate than proteins from the cell body.",
+    "ground_truth": [
+      {
+        "doc_id": 2988714,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Fz/PCP-dependent Pk localizes to the anterior membrane of neuroectoderm cells during zebrafish neuralation",
+    "ground_truth": [
+      {
+        "doc_id": 4423559,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Participating in six months of physical activity improves cognitive functioning.",
+    "ground_truth": [
+      {
+        "doc_id": 1642727,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "NFAT4 activation requires IP3R-mediated Ca2+ mobilization.",
+    "ground_truth": [
+      {
+        "doc_id": 30303335,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Homozygous deletion of murine Sbds gene from osterix-expressing mesenchymal stem and progenitor cells (MPCs) prevents oxidative stress.",
+    "ground_truth": [
+      {
+        "doc_id": 3863543,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Localization of PIN1 in the Arabidopsis embryo does not require VPS9a",
+    "ground_truth": [
+      {
+        "doc_id": 4350400,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Non-invasive ventilation use should be decreased if there is inadequate response to conventional treatment.",
+    "ground_truth": [
+      {
+        "doc_id": 13843341,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Input from  mental and physical health care professionals is effective at decreasing homelessness.",
+    "ground_truth": [
+      {
+        "doc_id": 25649714,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "LDL cholesterol has no involvement in the development of cardiovascular disease.",
+    "ground_truth": [
+      {
+        "doc_id": 2095573,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The loss of the TET protein functions may have dire biological consequences, such as myeloid cancers.",
+    "ground_truth": [
+      {
+        "doc_id": 13777138,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Autophagy declines in aged organisms.",
+    "ground_truth": [
+      {
+        "doc_id": 1084345,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Cytochrome c is released from the mitochondrial intermembrane space to cytosol during apoptosis.",
+    "ground_truth": [
+      {
+        "doc_id": 39381118,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Bariatric surgery has a positive impact on mental health.",
+    "ground_truth": [
+      {
+        "doc_id": 18872233,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "IFIT1 restricts viral replication by sequestrating mis-capped viral RNAs.",
+    "ground_truth": [
+      {
+        "doc_id": 24221369,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Mercaptopurine is anabolized into the inactive methylmercaptopurine by thiopurine methyltrasnferase (TPMT).",
+    "ground_truth": [
+      {
+        "doc_id": 6421792,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Transplanted human glial progenitor cells are incapable of forming a neural network with host animals' neurons.",
+    "ground_truth": [
+      {
+        "doc_id": 16284655,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "In transgenic mice harboring green florescent protein under the control of the Sox2 promoter, less than ten percent of the cells with green florescent colocalize with cell proliferation markers.",
+    "ground_truth": [
+      {
+        "doc_id": 16999023,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Mice that lack Interferon-\u03b3 or its receptor exhibit high resistance to experimental autoimmune myocarditis.",
+    "ground_truth": [
+      {
+        "doc_id": 24338780,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "PKG-la plays an essential role in expression of pain hypersensitivity in PGK-la knockout mice.",
+    "ground_truth": [
+      {
+        "doc_id": 11254556,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Patients in stable partnerships have a faster progression from HIV to AIDS.",
+    "ground_truth": [
+      {
+        "doc_id": 17077004,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The repair of Cas9-induced double strand breaks in human DNA is error-prone.",
+    "ground_truth": [
+      {
+        "doc_id": 44172171,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Less than 10% of the gabonese children with Schimmelpenning-Feuerstein-Mims syndrome (SFM) had a plasma lactate of more than 5mmol/L.",
+    "ground_truth": [
+      {
+        "doc_id": 18750453,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Cells lacking clpC have a defect in sporulation efficiency in Bacillus subtilis.",
+    "ground_truth": [
+      {
+        "doc_id": 4942718,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Upregulation of mosGCTL-1 is induced upon infection with West Nile virus.",
+    "ground_truth": [
+      {
+        "doc_id": 12885341,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Thigh-length graduated compression stockings (GCS) did not reduce deep vein thrombosis in patients admitted to hospital who are immobile because of acute stroke.",
+    "ground_truth": [
+      {
+        "doc_id": 11718220,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Hematopoietic Stem Cell purification reaches purity rate of up to 50%.",
+    "ground_truth": [
+      {
+        "doc_id": 13980338,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Epidemiological disease burden from noncommunicable diseases is more prevalent in low economic settings.",
+    "ground_truth": [
+      {
+        "doc_id": 13770184,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "AIRE is expressed in some skin tumors.",
+    "ground_truth": [
+      {
+        "doc_id": 12580014,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The availability of safe places to study is effective at decreasing homelessness.",
+    "ground_truth": [
+      {
+        "doc_id": 25649714,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Activation of PPM1D suppresses p53 function.",
+    "ground_truth": [
+      {
+        "doc_id": 5956380,
+        "relevance": 2
+      },
+      {
+        "doc_id": 4414547,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "PGE 2 promotes intestinal tumor growth by altering the expression of tumor suppressing and DNA repair genes.",
+    "ground_truth": [
+      {
+        "doc_id": 6923961,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "PD-1 triggering on monocytes reduces IL-10 production by monocytes.",
+    "ground_truth": [
+      {
+        "doc_id": 10648422,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Ethanol stress decreases the expression of IBP in bacteria.",
+    "ground_truth": [
+      {
+        "doc_id": 1148122,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Mutant mice lacking SVCT2 have greatly increased ascorbic acid levels in both brain and adrenals.",
+    "ground_truth": [
+      {
+        "doc_id": 19799455,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Cellular aging closely links to an older appearance.",
+    "ground_truth": [
+      {
+        "doc_id": 14079881,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The treatment of cancer patients with co-IR blockade precipitates adverse autoimmune events.",
+    "ground_truth": [
+      {
+        "doc_id": 11335781,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "The relationship between a breast cancer patient's capacity to metabolize tamoxifen and treatment outcome is dependent on the patient's genetic make-up.",
+    "ground_truth": [
+      {
+        "doc_id": 24341590,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Mathematical models predict that using Artemisinin-based combination therapy over nongametocytocidal drugs have a dramatic impact in reducing malaria transmission.",
+    "ground_truth": [
+      {
+        "doc_id": 1805641,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "DMRT1 is a sex-determining gene that is epigenetically regulated by the MHM region.",
+    "ground_truth": [
+      {
+        "doc_id": 4388470,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "The DdrB protein from Deinococcus radiodurans is an alternative SSB.",
+    "ground_truth": [
+      {
+        "doc_id": 15305881,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "IRG1 has antiviral effects against neurotropic viruses.",
+    "ground_truth": [
+      {
+        "doc_id": 9433958,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "TCR/CD3 microdomains are a required to induce the immunologic synapse to activate T cells.",
+    "ground_truth": [
+      {
+        "doc_id": 33499189,
+        "relevance": 2
+      },
+      {
+        "doc_id": 9283422,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Combination nicotine replacement therapies with varenicline or bupropion lead to significantly higher long-term abstinence rates at 52 weeks than varenicline monotherapy.",
+    "ground_truth": [
+      {
+        "doc_id": 11614737,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Neutrophil extracellular traps (NETs) are released by ANCA-stimulated neutrophils.",
+    "ground_truth": [
+      {
+        "doc_id": 17741440,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Inositol lipid 3-phosphatase PTEN converts Ptdlns(3,4)P 2 into phosphatidylinositol 4-phosphate.",
+    "ground_truth": [
+      {
+        "doc_id": 24294572,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "CHEK2 is not associated with breast cancer.",
+    "ground_truth": [
+      {
+        "doc_id": 13519661,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Taxation of sugar-sweetened beverages had no effect on the incidence rate of type II diabetes in India.",
+    "ground_truth": [
+      {
+        "doc_id": 10071552,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Ly49Q directs the organization of neutrophil migration to inflammation sites by regulating membrane raft functions.",
+    "ground_truth": [
+      {
+        "doc_id": 5531479,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Alizarin forms hydrogen bonds with residues involved in PGAM1 substrate binding.",
+    "ground_truth": [
+      {
+        "doc_id": 18810195,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Metastatic colorectal cancer treated with a single agent fluoropyrimidines resulted in reduced efficacy and lower quality of life when compared with oxaliplatin-based chemotherapy in elderly patients.",
+    "ground_truth": [
+      {
+        "doc_id": 15476777,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The ureABIEFGH gene cluster encodes urease maturation proteins : UreD/UreH, UreE, UreF, and UreG.",
+    "ground_truth": [
+      {
+        "doc_id": 4387784,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "N348I mutations cause resistance to zidovudine (AZT).",
+    "ground_truth": [
+      {
+        "doc_id": 15319019,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Cytosolic proteins bind to iron-responsive elements on mRNAs coding for DMT1. Cytosolic proteins bind to iron-responsive elements on mRNAs coding for proteins involved in iron uptake.",
+    "ground_truth": [
+      {
+        "doc_id": 3553087,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Mitochondria are uninvolved in apoptosis.",
+    "ground_truth": [
+      {
+        "doc_id": 8551160,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Cell autonomous sex determination in somatic cells occurs in Passeriformes.",
+    "ground_truth": [
+      {
+        "doc_id": 4388470,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Free histones are degraded by a Rad53-dependent mechanism once DNA has been replicated.",
+    "ground_truth": [
+      {
+        "doc_id": 14637235,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "GATA-3 is important for hematopoietic stem cell (HSC) function.",
+    "ground_truth": [
+      {
+        "doc_id": 10165258,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Breast cancer development is determined exclusively by genetic factors.",
+    "ground_truth": [
+      {
+        "doc_id": 18340282,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Fz/PCP-dependent Pk localizes to the anterior membrane of notochord cells during zebrafish neuralation.",
+    "ground_truth": [
+      {
+        "doc_id": 4423559,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Pyridostatin destabilizes the G - quadruplex in the telomeric region.",
+    "ground_truth": [
+      {
+        "doc_id": 16472469,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Many proteins in human cells can be post-translationally modified at lysine residues via acetylation.",
+    "ground_truth": [
+      {
+        "doc_id": 2831620,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Hypothalamic glutamate neurotransmission is crucial to energy balance.",
+    "ground_truth": [
+      {
+        "doc_id": 11886686,
+        "relevance": 2
+      },
+      {
+        "doc_id": 25007443,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Vitamin D deficiency is unrelated to birth weight.",
+    "ground_truth": [
+      {
+        "doc_id": 2425364,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Golli-deficient T-cells prefer to differentiate into an anergic phenotype in the adaptive immune response when there are increased levels of Ca2+ in the cytosol.",
+    "ground_truth": [
+      {
+        "doc_id": 14767844,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Arterioles have a larger lumen diameter than venules.",
+    "ground_truth": [
+      {
+        "doc_id": 8290953,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Replacement of histone H2A with H2A.Z slows gene activation in yeasts by stabilizing +1 nucleosomes.",
+    "ground_truth": [
+      {
+        "doc_id": 25254425,
+        "relevance": 2
+      },
+      {
+        "doc_id": 16626264,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Chronic aerobic exercise alters endothelial function, improving vasodilating mechanisms mediated by NO.",
+    "ground_truth": [
+      {
+        "doc_id": 1122279,
+        "relevance": 2
+      },
+      {
+        "doc_id": 10697096,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Rapid up-regulation and higher basal expression of interferon-induced genes reduce survival of granule cell neurons that are infected by West Nile virus.",
+    "ground_truth": [
+      {
+        "doc_id": 9433958,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Angiotensin converting enzyme inhibitors are associated with increased risk for functional renal insufficiency.",
+    "ground_truth": [
+      {
+        "doc_id": 6157837,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Dexamethasone decreases risk of postoperative bleeding.",
+    "ground_truth": [
+      {
+        "doc_id": 23349986,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "PDPN promotes efficient motility along stromal surfaces by activating the C-type lectin receptor to rearrange the actin cytoskeleton in dendritic cells.",
+    "ground_truth": [
+      {
+        "doc_id": 7370282,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Chenodeosycholic acid treatment reduces whole-body energy expenditure.",
+    "ground_truth": [
+      {
+        "doc_id": 1568684,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "MicroRNA is involved in the regulation of Neural Stem Cell (NSC) differentiation and proliferation dynamic homeostasis",
+    "ground_truth": [
+      {
+        "doc_id": 2356950,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "AMP-activated protein kinase (AMPK) activation increases inflammation-related fibrosis in the lungs.",
+    "ground_truth": [
+      {
+        "doc_id": 49556906,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Albendazole is used to treat lymphatic filariasis.",
+    "ground_truth": [
+      {
+        "doc_id": 1215116,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "NF2 (Merlin) causes phosphorylation and subsequent cytoplasmic sequestration of YAP in Drosophila by activating LATS1/2 kinases.",
+    "ground_truth": [
+      {
+        "doc_id": 1897324,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "The risk of breast cancer among parous women increases with placental weight of pregnancies, and this association is strongest for premenopausal breast cancer.",
+    "ground_truth": [
+      {
+        "doc_id": 37480103,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Leuko-increased blood increases infectious complications in red blood cell transfusion.",
+    "ground_truth": [
+      {
+        "doc_id": 24088502,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Nanoparticles can be targeted against specific cell types by incorporating aptamers into lipid nanoparticles.",
+    "ground_truth": [
+      {
+        "doc_id": 1469751,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Localization of PIN1 in the roots of Arabidopsis does not require VPS9a",
+    "ground_truth": [
+      {
+        "doc_id": 4350400,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Bone marrow cells contribute to adult macrophage compartments.",
+    "ground_truth": [
+      {
+        "doc_id": 12827098,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Occupancy of ribosomes by IncRNAs mirror 5 0-UTRs",
+    "ground_truth": [
+      {
+        "doc_id": 8426046,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Combining phosphatidylinositide 3-kinase and MEK 1/2 inhibitors is effective at treating KRAS mutant tumors.",
+    "ground_truth": [
+      {
+        "doc_id": 4961038,
+        "relevance": 2
+      },
+      {
+        "doc_id": 14241418,
+        "relevance": 2
+      },
+      {
+        "doc_id": 14819804,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "TNFAIP3 is a tumor suppressor in glioblastoma.",
+    "ground_truth": [
+      {
+        "doc_id": 33370,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Antibiotic induced alterations in the gut microbiome reduce resistance against Clostridium difficile",
+    "ground_truth": [
+      {
+        "doc_id": 6372244,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Infection of human T-cell lymphotropic virus type 1 is most frequent in individuals of African origin.",
+    "ground_truth": [
+      {
+        "doc_id": 24512064,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Mutations in G-Beta protein GNB2 are present in many cancers, resulting in loss of interaction with G-alpha subunits and concomitant activation of AKT pathway.",
+    "ground_truth": [
+      {
+        "doc_id": 33387953,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "NOX2-independent pathways can generate peroxynitrite by reacting with nitrogen intermediates.",
+    "ground_truth": [
+      {
+        "doc_id": 5483793,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "CX3CR1 on the Th2 cells suppresses airway inflammation.",
+    "ground_truth": [
+      {
+        "doc_id": 21366394,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Omnivores produce less trimethylamine N-oxide from dietary I-carnitine than vegetarians.",
+    "ground_truth": [
+      {
+        "doc_id": 14803797,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Ultrasound guidance significantly raises the number of traumatic procedures when attempting needle insertion.",
+    "ground_truth": [
+      {
+        "doc_id": 15482274,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Vitamin D deficiency effects the term of delivery.",
+    "ground_truth": [
+      {
+        "doc_id": 2425364,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Modifying the epigenome in the brain affects the normal human aging process by affecting certain genes related to neurogenesis.",
+    "ground_truth": [
+      {
+        "doc_id": 22543403,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Human T-lymphotropic virus type-I-associated myelopathy / tropical spastic paraparesis (HAM/TSP) patients produce Immunoglobulin G (IgG) antibodies which cross-react with an immunodominant epitope in Tax.",
+    "ground_truth": [
+      {
+        "doc_id": 5476778,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Enhanced early production of inflammatory chemokines improves viral control in the lung.",
+    "ground_truth": [
+      {
+        "doc_id": 19005293,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "There is no association between HNF4A mutations and diabetes risks.",
+    "ground_truth": [
+      {
+        "doc_id": 56893404,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Most termination events in Okazaki fragments are sequence specific.",
+    "ground_truth": [
+      {
+        "doc_id": 36606083,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Varenicline monotherapy is more effective after 12 weeks of treatment compared to combination nicotine replacement therapies with varenicline or bupropion.",
+    "ground_truth": [
+      {
+        "doc_id": 11614737,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Epigenetic modulating agents (EMAs) modulate antitumor immune response in a cancer model system.",
+    "ground_truth": [
+      {
+        "doc_id": 9955779,
+        "relevance": 2
+      },
+      {
+        "doc_id": 9767444,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "5% of perinatal mortality is due to low birth weight.",
+    "ground_truth": [
+      {
+        "doc_id": 1606628,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Ivermectin is used to treat onchocerciasis.",
+    "ground_truth": [
+      {
+        "doc_id": 1215116,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Stroke patients with prior use of direct oral anticoagulants have a lower risk of in-hospital mortality than stroke patients with prior use of warfarin.",
+    "ground_truth": [
+      {
+        "doc_id": 3898784,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Hyperfibrinogenemia increases rates of femoropopliteal bypass thrombosis.",
+    "ground_truth": [
+      {
+        "doc_id": 12991445,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Radioiodine treatment of non-toxic multinodular goitre reduces thyroid volume.",
+    "ground_truth": [
+      {
+        "doc_id": 9745001,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Venules have a thinner or absent smooth layer compared to arterioles.",
+    "ground_truth": [
+      {
+        "doc_id": 8290953,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Helminths interfere with immune system control of macrophages activated by IL-4 favor Mycobacterium tuberculosis replication.",
+    "ground_truth": [
+      {
+        "doc_id": 30774694,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "APOE4 expression in iPSC-derived neurons increases AlphaBeta production and tau phosphorylation, delaying GABA neuron degeneration.",
+    "ground_truth": [
+      {
+        "doc_id": 4709641,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "The locus rs647161 is associated with colorectal carcinoma.",
+    "ground_truth": [
+      {
+        "doc_id": 9650982,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "ITAM phosphorylation prevents the transfer of the T cell receptor (TCR) signal from the echo-domain to the cytoplasmic tail of the T cell receptor (TCR).",
+    "ground_truth": [
+      {
+        "doc_id": 33499189,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Hyperfibrinogenemia decreases rates of femoropopliteal bypass thrombosis.",
+    "ground_truth": [
+      {
+        "doc_id": 12991445,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "CX3CR1 on the Th2 cells promotes T cell survival",
+    "ground_truth": [
+      {
+        "doc_id": 21366394,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Activator-inhibitor pairs are provided dorsally by Admpchordin.",
+    "ground_truth": [
+      {
+        "doc_id": 6076903,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Active H. pylori urease has a polymeric structure that compromises two subunits, UreA and UreB.",
+    "ground_truth": [
+      {
+        "doc_id": 4387784,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Rapid phosphotransfer rates govern fidelity in two component systems",
+    "ground_truth": [
+      {
+        "doc_id": 11603066,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "CR is associated with higher methylation age.",
+    "ground_truth": [
+      {
+        "doc_id": 22038539,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Tirasemtiv has no effect on fast-twitch muscle.",
+    "ground_truth": [
+      {
+        "doc_id": 12631697,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Cell autonomous sex determination in somatic cells does not occur in Galliformes.",
+    "ground_truth": [
+      {
+        "doc_id": 4388470,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Deamination of cytidine to uridine on the minus strand of viral DNA results in catastrophic G-to-A mutations in the viral genome.",
+    "ground_truth": [
+      {
+        "doc_id": 4347374,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Hypocretin neurones induce panicprone state in rats.",
+    "ground_truth": [
+      {
+        "doc_id": 16056514,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "In mice, P. chabaudi parasites are able to proliferate faster early in infection when inoculated at lower numbers than when inoculated at high numbers.",
+    "ground_truth": [
+      {
+        "doc_id": 5289038,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "Integrating classroom-based collaborative learning with Web-based collaborative learning leads to subpar class performance",
+    "ground_truth": [
+      {
+        "doc_id": 12789595,
+        "relevance": 1
+      }
+    ]
+  },
+  {
+    "query": "APOE4 expression in iPSC-derived neurons increases AlphaBeta production and tau phosphorylation causing GABA neuron degeneration.",
+    "ground_truth": [
+      {
+        "doc_id": 4709641,
+        "relevance": 2
+      }
+    ]
+  },
+  {
+    "query": "Chenodeosycholic acid treatment increases whole-body energy expenditure.",
+    "ground_truth": [
+      {
+        "doc_id": 1568684,
+        "relevance": 2
+      }
+    ]
+  }
+]
