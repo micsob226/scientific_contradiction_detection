@@ -16,3 +16,6 @@ results/indices/
 
 # OS files
 .DS_Store
+
+# Editor crash files
+DEADJOE

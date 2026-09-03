@@ -1,3 +1,8 @@
+"""Side experiment: fine-tune Snowflake Arctic-embed-l-v2.0 on SciFact claim/evidence pairs.
+
+Not part of the main pipeline - see finetune_bge.py for the chosen model.
+Kept for the write-up.
+"""
 from data import load_jsonl
 from sentence_transformers import SentenceTransformer, InputExample, losses
 from sentence_transformers.evaluation import InformationRetrievalEvaluator
