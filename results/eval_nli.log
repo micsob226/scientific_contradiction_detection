@@ -1,0 +1,37 @@
+Zero-shot NLI baseline on data/claims_dev.jsonl (300 claims)
+Model: ynie/roberta-large-snli_mnli_fever_anli_R1_R2_R3-nli
+Retriever for the pipeline pass: search_bge_ft (top-1)
+
+Label distribution in dev: SUPPORT 124 / CONTRADICT 64 / NEI 112
+Majority-class baseline (always SUPPORT): 0.413 accuracy
+
+===== pipeline (retrieved evidence) =====
+Accuracy: 0.543  (163/300)
+gold \ pred        SUPPORT  CONTRADICT         NEI
+SUPPORT                 46           3          75
+CONTRADICT               6          15          43
+NEI                      5           5         102
+class            precision      recall          f1
+SUPPORT              0.807       0.371       0.508
+CONTRADICT           0.652       0.234       0.345
+NEI                  0.464       0.911       0.614
+Macro-F1: 0.489
+
+===== nli only (gold evidence) =====
+Accuracy: 0.560  (168/300)
+gold \ pred        SUPPORT  CONTRADICT         NEI
+SUPPORT                 53           3          68
+CONTRADICT               7          16          41
+NEI                      6           7          99
+class            precision      recall          f1
+SUPPORT              0.803       0.427       0.558
+CONTRADICT           0.615       0.250       0.356
+NEI                  0.476       0.884       0.619
+Macro-F1: 0.511
+
+Notes:
+- Beats the majority baseline (0.543 vs 0.413).
+- Retrieval is NOT the bottleneck: gold evidence only lifts accuracy 0.543 -> 0.560.
+  The NLI model itself is the limiting factor.
+- The model over-predicts NEI (recall 0.88-0.91) and under-recalls SUPPORT (0.37-0.43)
+  and CONTRADICT (0.23-0.25). Fine-tuning on SciFact should mainly help those two.

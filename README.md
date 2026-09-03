@@ -23,12 +23,13 @@ Place SciFact data in `data/`:
 - [x] Fine-tuning of MiniLM and BGE-Large on SciFact claim/evidence pairs (`finetune_minilm.py`, `finetune_bge.py`)
 - [x] Cross-encoder reranking (mxbai-rerank-large)
 - [x] Evaluation on held-out claims (nDCG@10, MAP, Recall@10) — see `evaluate_claims_dev_test.py`
-- [ ] NLI classification (SUPPORTS / CONTRADICTS / NOT ENOUGH INFO)
+- [~] NLI classification (SUPPORT / CONTRADICT / NEI): zero-shot baseline done (`nli.py`, `evaluate_nli.py`); fine-tuning script ready (`finetune_nli.py`, not yet run)
 - [ ] Explanation generation
 - [ ] Out-of-domain evaluation
-- [ ] Demo (Gradio)
+- [ ] Demo (Gradio — `gradio` not yet installed)
 
-Best result so far: fine-tuned BGE-Large, nDCG@10 = 0.830 on the held-out dev-test split (see `results/eval_dev_test.log`).
+Best retrieval result: fine-tuned BGE-Large, nDCG@10 = 0.830 on the held-out dev-test split (`results/eval_dev_test.log`).
+Zero-shot NLI: 0.543 accuracy / macro-F1 0.489 on dev (`results/eval_nli.log`).
 
 ## Structure
 
@@ -46,8 +47,11 @@ Best result so far: fine-tuned BGE-Large, nDCG@10 = 0.830 on the held-out dev-te
 ├── finetune_minilm.py        # Fine-tune an embedding model on SciFact claim/evidence pairs
 ├── finetune_bge.py           #   (finetune_bge.py produced the best model)
 ├── retrieval.py              # search_* functions: TF-IDF, BM25, dense (+ optional reranking) per model
+├── nli.py                    # classify(claim, abstract) -> SUPPORT / CONTRADICT / NEI (zero-shot NLI)
+├── finetune_nli.py           # Fine-tune a 3-class NLI classifier on SciFact (the overnight run)
 ├── evaluate_claims_train.py  # Evaluate all retrievers on the training claims
 ├── evaluate_claims_dev_test.py # Evaluate all retrievers on the held-out dev-test split
+├── evaluate_nli.py           # End-to-end: retrieve + classify, scored against the dev labels
 ├── make_plots.py             # Generate comparison plots from evaluation results
 ├── pyproject.toml
 │
