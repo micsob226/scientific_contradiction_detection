@@ -1,7 +1,7 @@
 [project]
 name = "scientific-contradiction-detection"
 version = "0.1.0"
-description = "Add your description here"
+description = "Retrieval + NLI pipeline for scientific claim verification on SciFact (SUPPORT / CONTRADICT / NEI)"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

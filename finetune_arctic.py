@@ -30,7 +30,7 @@ def main():
             doc_text = doc["title"] + " " + " ".join(doc["abstract"])
             train_examples.append(InputExample(texts=[claim_text, doc_text]))
 
-    print(f"Training pairs: {len(train_examples)} aus {len(claims_train)} Claims")
+    print(f"Training pairs: {len(train_examples)} from {len(claims_train)} claims")
 
     queries = {}
     relevant_docs = {}
@@ -46,7 +46,7 @@ def main():
         for entry in corpus
     }
 
-    print(f"Evaluator: {len(queries)} Queries against {len(corpus_dict)} Docs")
+    print(f"Evaluator: {len(queries)} queries against {len(corpus_dict)} docs")
 
     evaluator = InformationRetrievalEvaluator(
         queries=queries,
@@ -84,7 +84,7 @@ def main():
     baseline_ndcg = baseline_scores[ndcg_key]
     print(f"Baseline nDCG@10: {baseline_ndcg:.4f}")
 
-    print(f"\nTraining: {num_epochs} Epochs × {steps_per_epoch} Steps")
+    print(f"\nTraining: {num_epochs} epochs x {steps_per_epoch} steps")
     model.fit(
         train_objectives=[(train_dataloader, train_loss)],
         evaluator=evaluator,
