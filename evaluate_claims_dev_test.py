@@ -45,7 +45,7 @@ for claim in claims_dev_test:
     ranked_truth.sort(key=lambda x: x["relevance"], reverse=True)
     eval_set.append({"query": claim["claim"], "ground_truth": ranked_truth})
 
-with open("data/eval_set_dev_test.json", "w") as f:
+with open("results/eval_set_dev_test.json", "w") as f:
     json.dump(eval_set, f, indent=2)
 
 print(f"Evaluating on {len(eval_set)} claims (held-out dev_test)...")

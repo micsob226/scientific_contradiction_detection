@@ -38,6 +38,7 @@ Best result so far: fine-tuned BGE-Large, nDCG@10 = 0.830 on the held-out dev-te
 ├── results/
 │   ├── indices/              # FAISS indices + embeddings (generated, gitignored)
 │   ├── *_finetuned/           # Fine-tuned model weights (generated, gitignored)
+│   ├── eval_set*.json        # Ground-truth relevance judgments built by the evaluate scripts
 │   └── eval_dev_test.log     # Evaluation output
 ├── data.py                  # JSONL loading
 ├── embeddings_*.py           # Build FAISS index for one model (MiniLM/SPECTER/BGE/fine-tuned variants)
