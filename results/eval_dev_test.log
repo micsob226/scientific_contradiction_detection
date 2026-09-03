@@ -1,4 +1,3 @@
-5183 809 300 300
 Evaluating on 150 claims (held-out dev_test)...
   50/150 done
   100/150 done
@@ -8,10 +7,10 @@ Method                    nDCG@10        MAP    Recall@10
 ---------------------------------------------------------
 TF-IDF                      0.591      0.541        0.726
 BM25                        0.706      0.667        0.812
-FAISS                       0.655      0.600        0.811
-FAISS+Reranked              0.775      0.735        0.888
-FAISS-FT                    0.725      0.666        0.894
-FAISS-FT+Reranked           0.791      0.753        0.898
+MiniLM                      0.655      0.600        0.811
+MiniLM+Reranked             0.775      0.735        0.888
+MiniLM-FT                   0.725      0.666        0.894
+MiniLM-FT+Reranked          0.791      0.753        0.898
 SPECTER                     0.368      0.306        0.560
 SPECTER+Reranked            0.674      0.645        0.744
 BGE                         0.786      0.741        0.911
