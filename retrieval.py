@@ -1,10 +1,8 @@
 import re
-import pickle
 import faiss
 import numpy as np
 from rank_bm25 import BM25Okapi
 from nltk.stem import SnowballStemmer
-from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from sentence_transformers import CrossEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -46,11 +44,6 @@ for entry in corpus:
 
 bm25 = BM25Okapi(tokenized_corpus)
 
-# BM25 auf Disk speichern
-Path("results").mkdir(exist_ok=True)
-with open("results/indices/bm25_index.pkl", "wb") as file:
-    pickle.dump(bm25, file)
-
 
 # DENSE
 model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
@@ -85,6 +78,14 @@ minilm_ft_doc_ids = np.load("results/indices/corpus_minilm_ft_doc_ids.npy")
 BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
+def rerank(query: str, candidates: list, n: int) -> list:
+    """Re-score candidate docs with the cross-encoder, return the top n."""
+    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
+    scores = cross_encoder.predict(pairs)
+    ranked = sorted(zip(scores, candidates), key=lambda pair: pair[0], reverse=True)
+    return [doc for _score, doc in ranked[:n]]
+
+
 def search_tfidf(query: str, n: int = 5):
     query_vec = tfidf_vectorizer.transform([query])
     scores = cosine_similarity(query_vec, tfidf_matrix)[0]
@@ -99,86 +100,58 @@ def search_dense(query: str, n: int = 5):
     embedding = model.encode(query)
     embedding = embedding.reshape(1, -1)
     faiss.normalize_L2(embedding)
-    D, I = index.search(embedding, k=n)
-    hit_ids = doc_ids[I[0]]
+    _scores, positions = index.search(embedding, k=n)
+    hit_ids = doc_ids[positions[0]]
     return [id_to_entry[did] for did in hit_ids]
 
 def search_specter(query: str, n: int = 5):
     embedding = specter_model.encode(query, convert_to_numpy=True)
     embedding = embedding.reshape(1, -1).astype(np.float32)
     faiss.normalize_L2(embedding)
-    D, I = specter_index.search(embedding, k=n)
-    hit_ids = specter_doc_ids[I[0]]
+    _scores, positions = specter_index.search(embedding, k=n)
+    hit_ids = specter_doc_ids[positions[0]]
     return [id_to_entry[did] for did in hit_ids]
 
 def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_specter(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
+    return rerank(query, candidates, n)
 
 def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_dense(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
-
-def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
-    candidates = search_specter(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
+    return rerank(query, candidates, n)
 
 def search_bge(query: str, n: int = 5):
     query_with_prefix = BGE_QUERY_PREFIX + query
     embedding = bge_model.encode([query_with_prefix], convert_to_numpy=True).astype(np.float32)
     faiss.normalize_L2(embedding)
-    D, I = bge_index.search(embedding, k=n)
-    hit_ids = bge_doc_ids[I[0]]
+    _scores, positions = bge_index.search(embedding, k=n)
+    hit_ids = bge_doc_ids[positions[0]]
     return [id_to_entry[did] for did in hit_ids]
 
 def search_bge_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_bge(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
+    return rerank(query, candidates, n)
 
 def search_bge_ft(query: str, n: int = 5):
     query_with_prefix = BGE_QUERY_PREFIX + query
     embedding = bge_ft_model.encode([query_with_prefix], convert_to_numpy=True).astype(np.float32)
     faiss.normalize_L2(embedding)
-    D, I = bge_ft_index.search(embedding, k=n)
-    hit_ids = bge_ft_doc_ids[I[0]]
+    _scores, positions = bge_ft_index.search(embedding, k=n)
+    hit_ids = bge_ft_doc_ids[positions[0]]
     return [id_to_entry[did] for did in hit_ids]
 
 def search_bge_ft_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_bge_ft(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
+    return rerank(query, candidates, n)
 
 def search_minilm_ft(query: str, n: int = 5):
     embedding = minilm_ft_model.encode(query)
     embedding = embedding.reshape(1, -1)
     faiss.normalize_L2(embedding)
-    D, I = minilm_ft_index.search(embedding, k=n)
-    hit_ids = minilm_ft_doc_ids[I[0]]
+    _scores, positions = minilm_ft_index.search(embedding, k=n)
+    hit_ids = minilm_ft_doc_ids[positions[0]]
     return [id_to_entry[did] for did in hit_ids]
 
 def search_minilm_ft_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_minilm_ft(query, n=candidate_pool)
-    pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]
-    scores = cross_encoder.predict(pairs)
-    scored = list(zip(scores, candidates))
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scored[:n]]
+    return rerank(query, candidates, n)
