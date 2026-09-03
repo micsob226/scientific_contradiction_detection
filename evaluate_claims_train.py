@@ -1,32 +1,8 @@
 from data import load_jsonl
 from retrieval import search_bm25, search_minilm, search_minilm_reranked, search_tfidf, search_specter, search_specter_reranked, search_bge, search_bge_reranked
 import json
-import math
 
-
-def dcg(relevances):
-    return sum(rel / math.log2(i + 2) for i, rel in enumerate(relevances))
-
-def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
-    actual = dcg(retrieved_relevances[:k])
-    ideal = dcg(sorted(ground_truth_relevances, reverse=True)[:k])
-    return actual / ideal if ideal > 0 else 0.0
-
-def average_precision(retrieved_relevances, total_relevant):
-    if total_relevant == 0:
-        return 0.0
-    relevant_count = 0
-    precision_sum = 0.0
-    for i, rel in enumerate(retrieved_relevances):
-        if rel > 0:
-            relevant_count += 1
-            precision_sum += relevant_count / (i + 1)
-    return precision_sum / total_relevant
-
-def recall_at_k(retrieved_relevances, total_relevant, k):
-    if total_relevant == 0:
-        return 0.0
-    return sum(1 for r in retrieved_relevances[:k] if r > 0) / total_relevant
+from metrics import ndcg_at_k, average_precision, recall_at_k
 
 claims_train = load_jsonl("data/claims_train.jsonl")
 

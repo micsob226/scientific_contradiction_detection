@@ -1,17 +1,13 @@
+"""Early evaluation prototype: nDCG@5 over a fixed list of 10 training claims.
+
+Kept for reference / the write-up. The scripts actually used for results are
+evaluate_claims_train.py and evaluate_claims_dev_test.py (all claims, 3 metrics).
+"""
 from data import load_jsonl
 from retrieval import search_bm25, search_minilm, search_minilm_reranked, search_tfidf
 import json
-import math
 
-
-def dcg(relevances):
-    return sum(rel / math.log2(i + 2) for i, rel in enumerate(relevances))
-
-
-def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
-    actual = dcg(retrieved_relevances[:k])
-    ideal = dcg(sorted(ground_truth_relevances, reverse=True)[:k])
-    return actual / ideal if ideal > 0 else 0.0
+from metrics import ndcg_at_k
 
 
 queries = [

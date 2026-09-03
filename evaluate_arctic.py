@@ -1,17 +1,14 @@
-import math
+"""Side experiment: Snowflake Arctic-embed-l-v2.0 vs. the BGE baselines on dev_monitor.
+
+Not part of the main pipeline - BGE-Large (fine-tuned) is the chosen model.
+Kept for the write-up.
+"""
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 from data import load_jsonl
 
-
-def dcg(relevances):
-    return sum(rel / math.log2(i + 2) for i, rel in enumerate(relevances))
-
-def ndcg_at_k(retrieved_relevances, ground_truth_relevances, k):
-    actual = dcg(retrieved_relevances[:k])
-    ideal = dcg(sorted(ground_truth_relevances, reverse=True)[:k])
-    return actual / ideal if ideal > 0 else 0.0
+from metrics import ndcg_at_k
 
 def main():
     corpus = load_jsonl("data/corpus.jsonl")
