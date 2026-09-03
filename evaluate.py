@@ -1,5 +1,5 @@
 from data import load_jsonl
-from retrieval import search_bm25, search_dense, search_reranked, search_tfidf
+from retrieval import search_bm25, search_minilm, search_minilm_reranked, search_tfidf
 import json
 import math
 
@@ -74,12 +74,12 @@ for item in eval_set:
     score_bm25 = ndcg_at_k(bm25_rels, all_relevances, 5)
     ndcg_bm25.append(score_bm25)
 
-    dense_results = search_dense(query, n=5)
+    dense_results = search_minilm(query, n=5)
     dense_rels = [truth_lookup.get(r["doc_id"], 0) for r in dense_results]
     score_dense = ndcg_at_k(dense_rels, all_relevances, 5)
     ndcg_dense.append(score_dense)
 
-    reranked_results = search_reranked(query, n=5)
+    reranked_results = search_minilm_reranked(query, n=5)
     reranked_rels = [truth_lookup.get(r["doc_id"], 0) for r in reranked_results]
     score_reranked = ndcg_at_k(reranked_rels, all_relevances, 5)
     ndcg_reranked.append(score_reranked)
@@ -96,6 +96,6 @@ avg_reranked = sum(ndcg_reranked) / len(ndcg_reranked)
 avg_tfidf = sum(ndcg_tfidf) / len(ndcg_tfidf)
 
 print(f"BM25  avg nDCG@5: {avg_bm25:.3f}")
-print(f"FAISS avg nDCG@5: {avg_dense:.3f}")
+print(f"MiniLM avg nDCG@5: {avg_dense:.3f}")
 print(f"Reranked avg nDCG@5: {avg_reranked:.3f}")
 print(f"TF-IDF avg nDCG@5: {avg_tfidf:.3f}")

@@ -1,6 +1,6 @@
 from data import load_jsonl
 from retrieval import (
-    search_bm25, search_dense, search_reranked, search_tfidf,
+    search_bm25, search_minilm, search_minilm_reranked, search_tfidf,
     search_specter, search_specter_reranked,
     search_bge, search_bge_reranked,
     search_minilm_ft, search_minilm_ft_reranked,
@@ -51,18 +51,18 @@ with open("results/eval_set_dev_test.json", "w") as f:
 print(f"Evaluating on {len(eval_set)} claims (held-out dev_test)...")
 K = 10
 search_fns = {
-    "TF-IDF":              search_tfidf,
-    "BM25":                search_bm25,
-    "FAISS":               search_dense,
-    "FAISS+Reranked":      search_reranked,
-    "FAISS-FT":            search_minilm_ft,
-    "FAISS-FT+Reranked":   search_minilm_ft_reranked,
-    "SPECTER":             search_specter,
-    "SPECTER+Reranked":    search_specter_reranked,
-    "BGE":                 search_bge,
-    "BGE+Reranked":        search_bge_reranked,
-    "BGE-FT":              search_bge_ft,
-    "BGE-FT+Reranked":     search_bge_ft_reranked,
+    "TF-IDF":             search_tfidf,
+    "BM25":               search_bm25,
+    "MiniLM":             search_minilm,
+    "MiniLM+Reranked":    search_minilm_reranked,
+    "MiniLM-FT":          search_minilm_ft,
+    "MiniLM-FT+Reranked": search_minilm_ft_reranked,
+    "SPECTER":            search_specter,
+    "SPECTER+Reranked":   search_specter_reranked,
+    "BGE":                search_bge,
+    "BGE+Reranked":       search_bge_reranked,
+    "BGE-FT":             search_bge_ft,
+    "BGE-FT+Reranked":    search_bge_ft_reranked,
 }
 results = {name: {"ndcg": [], "ap": [], "recall": []} for name in search_fns}
 

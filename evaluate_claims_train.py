@@ -1,5 +1,5 @@
 from data import load_jsonl
-from retrieval import search_bm25, search_dense, search_reranked, search_tfidf, search_specter, search_specter_reranked, search_bge, search_bge_reranked
+from retrieval import search_bm25, search_minilm, search_minilm_reranked, search_tfidf, search_specter, search_specter_reranked, search_bge, search_bge_reranked
 import json
 import math
 
@@ -51,8 +51,8 @@ K = 10
 search_fns = {
     "TF-IDF":           search_tfidf,
     "BM25":             search_bm25,
-    "FAISS":            search_dense,
-    "FAISS+Reranked":   search_reranked,
+    "MiniLM":           search_minilm,
+    "MiniLM+Reranked":  search_minilm_reranked,
     "SPECTER":          search_specter,
     "SPECTER+Reranked": search_specter_reranked,
     "BGE":              search_bge,

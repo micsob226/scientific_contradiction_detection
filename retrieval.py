@@ -96,7 +96,7 @@ def search_bm25(query: str, n: int = 5):
     tokenized_query = preprocess(query)
     return bm25.get_top_n(tokenized_query, corpus, n=n)
 
-def search_dense(query: str, n: int = 5):
+def search_minilm(query: str, n: int = 5):
     embedding = model.encode(query)
     embedding = embedding.reshape(1, -1)
     faiss.normalize_L2(embedding)
@@ -116,8 +116,8 @@ def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_specter(query, n=candidate_pool)
     return rerank(query, candidates, n)
 
-def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
-    candidates = search_dense(query, n=candidate_pool)
+def search_minilm_reranked(query: str, n: int = 5, candidate_pool: int = 50):
+    candidates = search_minilm(query, n=candidate_pool)
     return rerank(query, candidates, n)
 
 def search_bge(query: str, n: int = 5):
