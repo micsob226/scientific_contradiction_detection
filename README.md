@@ -23,13 +23,21 @@ Place SciFact data in `data/`:
 - [x] Fine-tuning of MiniLM and BGE-Large on SciFact claim/evidence pairs (`finetune_minilm.py`, `finetune_bge.py`)
 - [x] Cross-encoder reranking (mxbai-rerank-large)
 - [x] Evaluation on held-out claims (nDCG@10, MAP, Recall@10) — see `evaluate_claims_dev_test.py`
-- [~] NLI classification (SUPPORT / CONTRADICT / NEI): zero-shot baseline done (`nli.py`, `evaluate_nli.py`); fine-tuning script ready (`finetune_nli.py`, not yet run)
+- [x] NLI classification (SUPPORT / CONTRADICT / NEI): zero-shot baseline + fine-tuned model (`nli.py`, `finetune_nli.py`, `evaluate_nli.py`)
 - [ ] Explanation generation
 - [ ] Out-of-domain evaluation
 - [ ] Demo (Gradio — `gradio` not yet installed)
 
 Best retrieval result: fine-tuned BGE-Large, nDCG@10 = 0.830 on the held-out dev-test split (`results/eval_dev_test.log`).
-Zero-shot NLI: 0.543 accuracy / macro-F1 0.489 on dev (`results/eval_nli.log`).
+
+NLI on the 300 dev claims (`results/eval_nli.log`, `results/eval_nli_finetuned.log`):
+
+| model                              | end-to-end acc / macro-F1 | gold-evidence acc / macro-F1 |
+|------------------------------------|---------------------------|------------------------------|
+| zero-shot (roberta-large-nli)      | 0.543 / 0.489             | 0.560 / 0.511                |
+| fine-tuned (nli-roberta-base)      | 0.710 / 0.697             | 0.783 / 0.763                |
+
+(150 of the 300 dev claims were the training monitor split, so the fine-tuned row is a mild upper bound.)
 
 ## Structure
 

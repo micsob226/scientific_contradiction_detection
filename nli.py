@@ -1,23 +1,21 @@
-"""Zero-shot NLI: does an abstract SUPPORT, CONTRADICT, or give NOT ENOUGH INFO
-for a claim?
+"""NLI: does an abstract SUPPORT, CONTRADICT, or give NOT ENOUGH INFO for a claim?
 
-We use a model that was pretrained on natural-language-inference (NLI) data.
-Given a (premise, hypothesis) pair it predicts one of "entailment",
-"neutral", "contradiction". We read that off and translate:
+An NLI model takes a (premise, hypothesis) pair and predicts one of
+"entailment", "neutral", "contradiction". We read that off and translate:
 
     entailment    -> SUPPORT
     neutral       -> NEI          (not enough info)
     contradiction -> CONTRADICT
 
-No training happens here. finetune_nli.py trains a model on SciFact itself;
-to use that model instead, point MODEL_NAME at "results/nli_finetuned".
+MODEL_NAME can be either a pretrained NLI model from the Hugging Face Hub
+(a zero-shot baseline) or a local folder produced by finetune_nli.py.
 """
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# RoBERTa-large trained on SNLI + MNLI + FEVER + ANLI. The FEVER/ANLI parts
-# make it decent at fact-checking style claims.
-# Simpler alternative: "roberta-large-mnli".
+# "results/nli_finetuned"  -> our model fine-tuned on SciFact (best, needs finetune_nli.py first)
+# "ynie/roberta-large-snli_mnli_fever_anli_R1_R2_R3-nli"  -> zero-shot baseline
+# "roberta-large-mnli"  -> smaller zero-shot alternative
 MODEL_NAME = "results/nli_finetuned"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

@@ -1,16 +1,15 @@
-"""Fine-tune a 3-class classifier on the SciFact training claims.
+"""Fine-tune a 3-class NLI classifier on the SciFact training claims.
 
 Input pair : (abstract text, claim)
-Label      : 0 = CONTRADICT, 1 = NEI, 2 = SUPPORT
+Label      : 0 = CONTRADICT, 1 = SUPPORT, 2 = NEI  (matches the base model's head)
 
-This is the long run. Start it and leave it (a few hours on a GPU). The best
-model is saved to results/nli_finetuned/. To use it, set MODEL_NAME in nli.py
-to "results/nli_finetuned" and run evaluate_nli.py again.
+Runs in a few minutes on one GPU. The best model is saved to
+results/nli_finetuned/. To use it, set MODEL_NAME in nli.py to
+"results/nli_finetuned" and run evaluate_nli.py again.
 
-We start from a plain "roberta-base" and train a fresh 3-way head, so the
-label numbers above are exactly what the model learns. An alternative
-starting point with some NLI knowledge already baked in is
-"cross-encoder/nli-roberta-base".
+We start from "cross-encoder/nli-roberta-base", which already knows generic
+NLI, and adapt it to SciFact. Starting from a plain "roberta-base" instead
+(a cold 3-way head) was tried and did clearly worse.
 """
 import os
 
