@@ -127,14 +127,6 @@ def search_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     scored.sort(key=lambda x: x[0], reverse=True)
     return [c for _, c in scored[:n]]
 
-def search_specter(query: str, n: int = 5):
-    embedding = specter_model.encode(query, convert_to_numpy=True)
-    embedding = embedding.reshape(1, -1).astype(np.float32)
-    faiss.normalize_L2(embedding)
-    D, I = specter_index.search(embedding, k=n)
-    hit_ids = specter_doc_ids[I[0]]
-    return [id_to_entry[did] for did in hit_ids]
-
 def search_specter_reranked(query: str, n: int = 5, candidate_pool: int = 50):
     candidates = search_specter(query, n=candidate_pool)
     pairs = [(query, c["title"] + " " + " ".join(c["abstract"])) for c in candidates]

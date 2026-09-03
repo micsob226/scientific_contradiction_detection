@@ -12,3 +12,7 @@ checkpoints/
 results/minilm_finetuned/
 results/arctic_finetuned/
 results/bge_finetuned/
+results/indices/
+
+# OS files
+.DS_Store
