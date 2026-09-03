@@ -8,8 +8,9 @@ from sentence_transformers import CrossEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from data import corpus
+from data import load_jsonl
 
+corpus = load_jsonl("data/corpus.jsonl")
 
 
 id_to_entry = {}
