@@ -15,7 +15,7 @@ embeddings = model.encode(texts, batch_size=64, show_progress_bar=True, convert_
 print(f"Shape: {embeddings.shape}")
 
 results_dir = Path("results/indices")
-results_dir.mkdir(exist_ok=True)
+results_dir.mkdir(parents=True, exist_ok=True)
 
 np.save(results_dir / "corpus_specter_doc_ids.npy", doc_ids)
 

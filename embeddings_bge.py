@@ -14,7 +14,7 @@ embedding = model.encode(texts, batch_size=64, show_progress_bar=True, convert_t
 print(embedding.shape)
 
 results_dir = Path("results/indices")
-results_dir.mkdir(exist_ok=True)
+results_dir.mkdir(parents=True, exist_ok=True)
 
 np.save(results_dir / "corpus_bge_doc_ids.npy", doc_ids)
 np.save(results_dir / "corpus_bge_embeddings.npy", embedding)

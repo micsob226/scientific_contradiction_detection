@@ -53,7 +53,7 @@ def plot_main_comparison():
     print(f"Saved: {out}")
 
 def plot_capacity_story():
-    """Dumbbell Chart: Baseline → FT für MiniLM und BGE."""
+    """Dumbbell chart: baseline vs. fine-tuned for MiniLM and BGE."""
     models    = ["MiniLM\n(22M params)", "BGE-Large\n(335M params)"]
     baseline  = [RESULTS["MiniLM"]["ndcg"],    RESULTS["BGE"]["ndcg"]]
     finetuned = [RESULTS["MiniLM-FT"]["ndcg"], RESULTS["BGE-FT"]["ndcg"]]
@@ -97,8 +97,8 @@ def plot_capacity_story():
     print(f"Saved: {out}")
 
 def plot_training_curves_zoomed():
-    """Line Chart: nDCG@10 auf dev_monitor pro Epoche, BGE und MiniLM.
-    Auto-zoomed Y-Achse für maximale Trend-Lesbarkeit."""
+    """Line chart: nDCG@10 on dev_monitor per epoch, BGE and MiniLM.
+    Y-axis auto-zoomed for maximum trend readability."""
     epochs       = [0, 1, 2, 3, 4, 5]
     bge_curve    = [0.7046, 0.7163, 0.7373, 0.7595, 0.7663, 0.7643]
     minilm_curve = [0.6323, 0.6516, 0.6630, 0.6758, 0.6744, 0.6738]
@@ -148,8 +148,8 @@ def plot_training_curves_zoomed():
 
 
 def plot_training_curves_full_scale():
-    """Line Chart wie oben, aber Y-Achse 0-1 (wissenschaftlich strenger).
-    Trends visuell flacher, dafür ehrliche Skala."""
+    """Same line chart as above, but Y-axis fixed to 0-1 (scientifically stricter).
+    Trends look flatter, but the scale is honest."""
     epochs       = [0, 1, 2, 3, 4, 5]
     bge_curve    = [0.7046, 0.7163, 0.7373, 0.7595, 0.7663, 0.7643]
     minilm_curve = [0.6323, 0.6516, 0.6630, 0.6758, 0.6744, 0.6738]
@@ -200,8 +200,8 @@ def plot_training_curves_full_scale():
 
 
 def plot_reranking_effect():
-    """Slope Chart: Reranking-Effekt pro Retriever.
-    Zeigt: schwache Retriever profitieren stark, BGE-FT wird durch CE geschädigt."""
+    """Slope chart: reranking effect per retriever.
+    Shows: weak retrievers benefit a lot, BGE-FT is hurt by the cross-encoder."""
     methods = {
         "MiniLM":    {"without": 0.655, "with": 0.775},
         "MiniLM-FT": {"without": 0.725, "with": 0.791},
@@ -209,7 +209,7 @@ def plot_reranking_effect():
         "BGE-FT":    {"without": 0.830, "with": 0.798},
     }
 
-    COLOR_WARNING = "#C0392B"  # negativer BGE-FT-Verlauf
+    COLOR_WARNING = "#C0392B"  # negative BGE-FT slope
 
     fig, ax = plt.subplots(figsize=(11, 6.5))
     x_positions = [0, 1]
