@@ -55,8 +55,9 @@ NLI on the 300 dev claims (`results/eval_nli.log`, `results/eval_nli_finetuned.l
 ├── finetune_minilm.py        # Fine-tune an embedding model on SciFact claim/evidence pairs
 ├── finetune_bge.py           #   (finetune_bge.py produced the best model)
 ├── retrieval.py              # search_* functions: TF-IDF, BM25, dense (+ optional reranking) per model
-├── nli.py                    # classify(claim, abstract) -> SUPPORT / CONTRADICT / NEI (zero-shot NLI)
-├── finetune_nli.py           # Fine-tune a 3-class NLI classifier on SciFact (the overnight run)
+├── nli.py                    # classify(claim, abstract) -> SUPPORT / CONTRADICT / NEI
+├── pipeline.py               # end-to-end: claim in -> retrieve evidence -> verdict out
+├── finetune_nli.py           # Fine-tune a 3-class NLI classifier on SciFact
 ├── evaluate_claims_train.py  # Evaluate all retrievers on the training claims
 ├── evaluate_claims_dev_test.py # Evaluate all retrievers on the held-out dev-test split
 ├── evaluate_nli.py           # End-to-end: retrieve + classify, scored against the dev labels
@@ -80,6 +81,13 @@ python embeddings_bge.py        # BGE-Large
 python finetune_bge.py
 python embeddings_bge_ft.py     # rebuild the index with the fine-tuned model
 
-# 3. Evaluate
+# 3. Evaluate retrieval
 python evaluate_claims_dev_test.py
+
+# 4. (Optional) fine-tune the NLI classifier, then evaluate the full pipeline
+python finetune_nli.py           # writes results/nli_finetuned/
+python evaluate_nli.py           # retrieve + classify, scored on the dev labels
+
+# 5. Check a single claim end to end
+python pipeline.py "Statins reduce all-cause mortality in healthy adults."
 ```
