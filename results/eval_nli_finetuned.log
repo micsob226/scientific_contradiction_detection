@@ -1,0 +1,38 @@
+Loading NLI model: results/nli_finetuned
+Evaluating NLI on 300 dev claims ...
+  50/300 done
+  100/300 done
+  150/300 done
+  200/300 done
+  250/300 done
+  300/300 done
+
+===== pipeline (retrieved evidence) =====
+Accuracy: 0.710  (213/300)
+
+gold \ pred        SUPPORT  CONTRADICT         NEI
+SUPPORT                 92          12          20
+CONTRADICT              16          40           8
+NEI                     19          12          81
+
+class            precision      recall          f1
+SUPPORT              0.724       0.742       0.733
+CONTRADICT           0.625       0.625       0.625
+NEI                  0.743       0.723       0.733
+
+Macro-F1: 0.697
+
+===== nli only (gold evidence) =====
+Accuracy: 0.783  (235/300)
+
+gold \ pred        SUPPORT  CONTRADICT         NEI
+SUPPORT                100          12          12
+CONTRADICT              16          40           8
+NEI                     11           6          95
+
+class            precision      recall          f1
+SUPPORT              0.787       0.806       0.797
+CONTRADICT           0.690       0.625       0.656
+NEI                  0.826       0.848       0.837
+
+Macro-F1: 0.763

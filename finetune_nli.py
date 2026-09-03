@@ -12,14 +12,22 @@ label numbers above are exactly what the model learns. An alternative
 starting point with some NLI knowledge already baked in is
 "cross-encoder/nli-roberta-base".
 """
+import os
+
+# This server has several GPUs. sentence-transformers would try to use all of
+# them (DataParallel), which currently crashes the CrossEncoder loss. Pin the
+# run to a single GPU. Override from the shell if GPU 0 is busy, e.g.
+#     CUDA_VISIBLE_DEVICES=2 python finetune_nli.py
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0")
+
 from data import load_jsonl
 from sentence_transformers import CrossEncoder, InputExample
 from sentence_transformers.cross_encoder.evaluation import CESoftmaxAccuracyEvaluator
 from torch.utils.data import DataLoader
 
-BASE_MODEL = "roberta-base"
+BASE_MODEL = "cross-encoder/nli-roberta-base"
 
-VERDICT_TO_LABEL = {"CONTRADICT": 0, "NEI": 1, "SUPPORT": 2}
+VERDICT_TO_LABEL = {"CONTRADICT": 0, "SUPPORT": 1, "NEI": 2}  # matches the base model's head
 
 
 def abstract_text(doc):

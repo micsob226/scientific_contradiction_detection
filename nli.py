@@ -18,7 +18,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 # RoBERTa-large trained on SNLI + MNLI + FEVER + ANLI. The FEVER/ANLI parts
 # make it decent at fact-checking style claims.
 # Simpler alternative: "roberta-large-mnli".
-MODEL_NAME = "ynie/roberta-large-snli_mnli_fever_anli_R1_R2_R3-nli"
+MODEL_NAME = "results/nli_finetuned"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -27,6 +27,12 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 model.to(DEVICE)
 model.eval()
+
+
+# finetune_nli.py trains the head in this position order (label id 0, 1, 2).
+# A model we fine-tuned ourselves may report its labels only as
+# "LABEL_0" / "LABEL_1" / "LABEL_2", so we fall back to this list.
+FINETUNED_ORDER = ["CONTRADICT", "SUPPORT", "NEI"]
 
 
 def nli_label_to_verdict(name):
@@ -38,6 +44,8 @@ def nli_label_to_verdict(name):
         return "CONTRADICT"
     if "neutral" in name:
         return "NEI"
+    if name.startswith("label_"):
+        return FINETUNED_ORDER[int(name.split("_")[1])]
     raise ValueError(f"Unexpected NLI label from the model: {name!r}")
 
 
