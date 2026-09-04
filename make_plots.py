@@ -22,6 +22,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 COLOR_DEFAULT = "#4878A6"
 COLOR_HIGHLIGHT = "#2E7D32"
+COLOR_WARNING = "#C0392B"
 
 def plot_main_comparison():
     sorted_methods = sorted(RESULTS.items(), key=lambda x: x[1]["ndcg"], reverse=True)
@@ -210,8 +211,6 @@ def plot_reranking_effect():
         "BGE-FT":    {"without": 0.830, "with": 0.798},
     }
 
-    COLOR_WARNING = "#C0392B"  # negative BGE-FT slope
-
     fig, ax = plt.subplots(figsize=(11, 6.5))
     x_positions = [0, 1]
     x_labels = ["without\nReranker", "with mxbai\nReranker"]
@@ -272,7 +271,7 @@ def plot_nli_confusion_matrices():
     ])
 
     fig, axes = plt.subplots(1, 2, figsize=(12.5, 6.2))
-    fig.subplots_adjust(wspace=0.35, top=0.74, bottom=0.12)
+    fig.subplots_adjust(wspace=0.30, top=0.74, bottom=0.12)
     panels = [
         (axes[0], zero_shot,
          "Zero-shot (roberta-large-nli)\nacc 0.560   macro-F1 0.511"),
@@ -299,26 +298,24 @@ def plot_nli_confusion_matrices():
                                        edgecolor=COLOR_HIGHLIGHT, linewidth=3))
 
         wrong_to_nei = int(matrix[0, 2] + matrix[1, 2])
-        ax.set_xticks(range(3), labels, fontsize=10.5)
-        ax.set_yticks(range(3), labels, fontsize=10.5, rotation=90, va="center")
+        ax.set_xticks(range(3), labels, fontsize=11)
+        ax.set_yticks(range(3), labels, fontsize=11, rotation=90, va="center")
         ax.xaxis.set_ticks_position("top")
-        ax.set_xlabel("predicted", fontsize=12)
+        ax.set_xlabel("predicted", fontsize=13)
         ax.xaxis.set_label_position("top")
-        ax.set_ylabel("gold", fontsize=12)
+        ax.set_ylabel("gold", fontsize=13)
         ax.set_title(title, fontsize=12, pad=26)
         ax.text(0.5, -0.14,
                 f"SUPPORT / CONTRADICT misread as NEI:  {wrong_to_nei}",
                 transform=ax.transAxes, ha="center", fontsize=11,
-                color="#C0392B", fontweight="bold")
+                color=COLOR_WARNING, fontweight="bold")
         ax.set_xticks(np.arange(-0.5, 3), minor=True)
         ax.set_yticks(np.arange(-0.5, 3), minor=True)
         ax.grid(which="minor", color="white", linewidth=2)
         ax.tick_params(which="minor", length=0)
 
-    fig.suptitle("Fine-tuning drains the over-predicted NEI column",
-                 fontsize=14, y=0.97)
-    fig.text(0.5, 0.905, "gold evidence, 300 dev claims", ha="center",
-             fontsize=10.5, color="#555555")
+    fig.suptitle("Fine-tuning drains the over-predicted NEI column  ·  gold evidence, 300 dev claims",
+                 fontsize=13, y=0.98)
     out = OUTPUT_DIR / "05_nli_confusion_matrices.png"
     plt.savefig(out, dpi=300, bbox_inches="tight")
     plt.close()
@@ -332,51 +329,49 @@ def plot_nli_metrics_comparison():
     Nuance: the gold-minus-retrieved gap *widens* after fine-tuning. Once the
     classifier is strong, retrieval mistakes become the visible bottleneck.
     """
-    # (retrieved evidence, gold evidence)  -- results/eval_nli*.log
-    data = {
-        "Accuracy": {"Zero-shot": (0.543, 0.560), "Fine-tuned": (0.710, 0.783)},
-        "Macro-F1": {"Zero-shot": (0.489, 0.511), "Fine-tuned": (0.697, 0.763)},
-    }
+    # (label, retrieved evidence, gold evidence)  -- results/eval_nli*.log
+    rows = [
+        ("Accuracy\nzero-shot",  0.543, 0.560),
+        ("Accuracy\nfine-tuned", 0.710, 0.783),
+        ("Macro-F1\nzero-shot",  0.489, 0.511),
+        ("Macro-F1\nfine-tuned", 0.697, 0.763),
+    ]
+    labels    = [r[0] for r in rows]
+    retrieved = [r[1] for r in rows]
+    gold      = [r[2] for r in rows]
 
-    fig, axes = plt.subplots(1, 2, figsize=(13, 6), sharey=True)
-    bar_w = 0.34
+    x = np.arange(len(rows))
+    bar_w = 0.38
 
-    for ax, (metric, groups) in zip(axes, data.items()):
-        names = list(groups)
-        x = np.arange(len(names))
-        retrieved = [groups[n][0] for n in names]
-        gold = [groups[n][1] for n in names]
+    fig, ax = plt.subplots(figsize=(12, 6.75))
+    b1 = ax.bar(x - bar_w / 2, retrieved, bar_w, color=COLOR_DEFAULT,
+                edgecolor="white", linewidth=0.5, label="retrieved (BGE-FT top-1)")
+    b2 = ax.bar(x + bar_w / 2, gold, bar_w, color=COLOR_HIGHLIGHT,
+                edgecolor="white", linewidth=0.5, label="gold evidence")
 
-        b1 = ax.bar(x - bar_w / 2, retrieved, bar_w, color=COLOR_DEFAULT,
-                    hatch="///", edgecolor="white", label="retrieved (BGE-FT top-1)")
-        b2 = ax.bar(x + bar_w / 2, gold, bar_w, color=COLOR_HIGHLIGHT,
-                    edgecolor="white", label="gold evidence")
+    for bars in (b1, b2):
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.012,
+                    f"{bar.get_height():.3f}", ha="center", fontsize=11)
 
-        for bars in (b1, b2):
-            for bar in bars:
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.012,
-                        f"{bar.get_height():.3f}", ha="center", fontsize=10)
+    for xi, (_, r, g) in enumerate(rows):
+        top = max(r, g) + 0.07
+        ax.annotate("", xy=(xi + bar_w / 2, top), xytext=(xi - bar_w / 2, top),
+                    arrowprops=dict(arrowstyle="<->", color="gray", lw=1.2))
+        ax.text(xi, top + 0.02, f"Δ +{g - r:.3f}", ha="center", fontsize=10,
+                color="gray", fontweight="bold")
 
-        for xi, n in enumerate(names):
-            gap = groups[n][1] - groups[n][0]
-            top = max(groups[n]) + 0.075
-            ax.annotate("", xy=(xi + bar_w / 2, top), xytext=(xi - bar_w / 2, top),
-                        arrowprops=dict(arrowstyle="<->", color="gray", lw=1.3))
-            ax.text(xi, top + 0.018, f"Δ +{gap:.3f}", ha="center", fontsize=10,
-                    color="gray", fontweight="bold")
+    ax.set_xticks(x, labels, fontsize=11)
+    ax.set_ylabel("score on the 300 dev claims", fontsize=13)
+    ax.set_ylim(0, 0.95)
+    ax.set_title("NLI verdict: fine-tuning lifts every metric — and widens the retrieval gap",
+                 fontsize=14, pad=15)
+    ax.legend(loc="upper left", fontsize=11, frameon=False)
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    ax.set_axisbelow(True)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
 
-        ax.set_xticks(x, names, fontsize=12)
-        ax.set_title(metric, fontsize=13, pad=12)
-        ax.set_ylim(0, 0.95)
-        ax.grid(axis="y", linestyle="--", alpha=0.4)
-        ax.set_axisbelow(True)
-        for spine in ["top", "right"]:
-            ax.spines[spine].set_visible(False)
-
-    axes[0].set_ylabel("score on the 300 dev claims", fontsize=12)
-    axes[1].legend(loc="upper left", fontsize=11, frameon=False)
-    fig.suptitle("NLI verdict: fine-tuning lifts every metric — and widens the retrieval gap",
-                 fontsize=14, y=1.00)
     plt.tight_layout()
     out = OUTPUT_DIR / "06_nli_metrics_comparison.png"
     plt.savefig(out, dpi=300, bbox_inches="tight")
@@ -407,9 +402,9 @@ def plot_arctic_side_experiment():
     fig, ax = plt.subplots(figsize=(11, 6.5))
 
     b1 = ax.bar(x - bar_w / 2, pretrained, bar_w, color=COLOR_DEFAULT,
-                hatch="///", edgecolor="white", label="pretrained")
+                edgecolor="white", linewidth=0.5, label="pretrained")
     b2 = ax.bar(x + bar_w / 2, finetuned, bar_w, color=COLOR_HIGHLIGHT,
-                edgecolor="white", label="fine-tuned on SciFact")
+                edgecolor="white", linewidth=0.5, label="fine-tuned on SciFact")
 
     for bars in (b1, b2):
         for bar in bars:
@@ -424,15 +419,15 @@ def plot_arctic_side_experiment():
             "carried forward\n(see dashed line)", ha="center", va="center",
             fontsize=10, color="white", fontweight="bold")
 
-    ax.axhline(validated_bge_ft_devtest, color="#C0392B", linestyle="--", linewidth=1.8)
+    ax.axhline(validated_bge_ft_devtest, color=COLOR_WARNING, linestyle="--", linewidth=1.8)
     ax.text(len(models) - 0.5, validated_bge_ft_devtest + 0.008,
             f"BGE-FT on held-out dev-test: {validated_bge_ft_devtest:.3f}  (validated)",
-            ha="right", fontsize=10, color="#C0392B", fontweight="bold")
+            ha="right", fontsize=10, color=COLOR_WARNING, fontweight="bold")
 
     ax.set_xticks(x, models, fontsize=12)
-    ax.set_ylabel("nDCG@10 on dev_monitor (150 claims)", fontsize=12)
+    ax.set_ylabel("nDCG@10 on dev_monitor (150 claims)", fontsize=13)
     ax.set_ylim(0, 0.95)
-    ax.set_title("Arctic-embed: a promising side experiment we didn't validate",
+    ax.set_title("Arctic-embed: a promising side experiment I didn't validate",
                  fontsize=14, pad=15)
     ax.legend(loc="upper left", fontsize=11, frameon=False)
     ax.grid(axis="y", linestyle="--", alpha=0.4)
