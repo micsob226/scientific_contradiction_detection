@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from pathlib import Path
 
 RESULTS = {
@@ -248,9 +249,215 @@ def plot_reranking_effect():
     plt.close()
     print(f"Saved: {out}")
 
+def plot_nli_confusion_matrices():
+    """Side-by-side confusion matrices for the NLI verdict step, gold-evidence
+    pass on the 300 dev claims (results/eval_nli.log, results/eval_nli_finetuned.log).
+
+    Left: zero-shot roberta-large-nli. Right: the SciFact fine-tuned classifier.
+    The zero-shot model dumps most SUPPORT and CONTRADICT claims into NEI;
+    fine-tuning drains that over-predicted column.
+    """
+    labels = ["SUPPORT", "CONTRADICT", "NEI"]
+
+    # rows = gold verdict, columns = predicted verdict
+    zero_shot = np.array([
+        [53,  3, 68],
+        [ 7, 16, 41],
+        [ 6,  7, 99],
+    ])
+    finetuned = np.array([
+        [100, 12, 12],
+        [ 16, 40,  8],
+        [ 11,  6, 95],
+    ])
+
+    fig, axes = plt.subplots(1, 2, figsize=(12.5, 6.2))
+    fig.subplots_adjust(wspace=0.35, top=0.74, bottom=0.12)
+    panels = [
+        (axes[0], zero_shot,
+         "Zero-shot (roberta-large-nli)\nacc 0.560   macro-F1 0.511"),
+        (axes[1], finetuned,
+         "Fine-tuned on SciFact (nli-roberta-base)\nacc 0.783   macro-F1 0.763"),
+    ]
+
+    for ax, matrix, title in panels:
+        row_sums = matrix.sum(axis=1, keepdims=True)
+        recall = matrix / row_sums
+
+        ax.imshow(recall, cmap="Blues", vmin=0.0, vmax=1.0, aspect="auto")
+
+        for i in range(3):
+            for j in range(3):
+                share = recall[i, j]
+                txt_color = "white" if share > 0.55 else "#1a1a1a"
+                ax.text(j, i, f"{matrix[i, j]}\n{share:.0%}", ha="center", va="center",
+                        fontsize=13, fontweight="bold", color=txt_color, linespacing=1.5)
+
+        # outline the correct (diagonal) cells
+        for k in range(3):
+            ax.add_patch(plt.Rectangle((k - 0.5, k - 0.5), 1, 1, fill=False,
+                                       edgecolor=COLOR_HIGHLIGHT, linewidth=3))
+
+        wrong_to_nei = int(matrix[0, 2] + matrix[1, 2])
+        ax.set_xticks(range(3), labels, fontsize=10.5)
+        ax.set_yticks(range(3), labels, fontsize=10.5, rotation=90, va="center")
+        ax.xaxis.set_ticks_position("top")
+        ax.set_xlabel("predicted", fontsize=12)
+        ax.xaxis.set_label_position("top")
+        ax.set_ylabel("gold", fontsize=12)
+        ax.set_title(title, fontsize=12, pad=26)
+        ax.text(0.5, -0.14,
+                f"SUPPORT / CONTRADICT misread as NEI:  {wrong_to_nei}",
+                transform=ax.transAxes, ha="center", fontsize=11,
+                color="#C0392B", fontweight="bold")
+        ax.set_xticks(np.arange(-0.5, 3), minor=True)
+        ax.set_yticks(np.arange(-0.5, 3), minor=True)
+        ax.grid(which="minor", color="white", linewidth=2)
+        ax.tick_params(which="minor", length=0)
+
+    fig.suptitle("Fine-tuning drains the over-predicted NEI column",
+                 fontsize=14, y=0.97)
+    fig.text(0.5, 0.905, "gold evidence, 300 dev claims", ha="center",
+             fontsize=10.5, color="#555555")
+    out = OUTPUT_DIR / "05_nli_confusion_matrices.png"
+    plt.savefig(out, dpi=300, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
+
+def plot_nli_metrics_comparison():
+    """Grouped bars: accuracy and macro-F1 for the zero-shot vs. fine-tuned NLI
+    model, each scored on retrieved evidence (BGE-FT top-1) and on gold evidence.
+
+    Nuance: the gold-minus-retrieved gap *widens* after fine-tuning. Once the
+    classifier is strong, retrieval mistakes become the visible bottleneck.
+    """
+    # (retrieved evidence, gold evidence)  -- results/eval_nli*.log
+    data = {
+        "Accuracy": {"Zero-shot": (0.543, 0.560), "Fine-tuned": (0.710, 0.783)},
+        "Macro-F1": {"Zero-shot": (0.489, 0.511), "Fine-tuned": (0.697, 0.763)},
+    }
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 6), sharey=True)
+    bar_w = 0.34
+
+    for ax, (metric, groups) in zip(axes, data.items()):
+        names = list(groups)
+        x = np.arange(len(names))
+        retrieved = [groups[n][0] for n in names]
+        gold = [groups[n][1] for n in names]
+
+        b1 = ax.bar(x - bar_w / 2, retrieved, bar_w, color=COLOR_DEFAULT,
+                    hatch="///", edgecolor="white", label="retrieved (BGE-FT top-1)")
+        b2 = ax.bar(x + bar_w / 2, gold, bar_w, color=COLOR_HIGHLIGHT,
+                    edgecolor="white", label="gold evidence")
+
+        for bars in (b1, b2):
+            for bar in bars:
+                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.012,
+                        f"{bar.get_height():.3f}", ha="center", fontsize=10)
+
+        for xi, n in enumerate(names):
+            gap = groups[n][1] - groups[n][0]
+            top = max(groups[n]) + 0.075
+            ax.annotate("", xy=(xi + bar_w / 2, top), xytext=(xi - bar_w / 2, top),
+                        arrowprops=dict(arrowstyle="<->", color="gray", lw=1.3))
+            ax.text(xi, top + 0.018, f"Δ +{gap:.3f}", ha="center", fontsize=10,
+                    color="gray", fontweight="bold")
+
+        ax.set_xticks(x, names, fontsize=12)
+        ax.set_title(metric, fontsize=13, pad=12)
+        ax.set_ylim(0, 0.95)
+        ax.grid(axis="y", linestyle="--", alpha=0.4)
+        ax.set_axisbelow(True)
+        for spine in ["top", "right"]:
+            ax.spines[spine].set_visible(False)
+
+    axes[0].set_ylabel("score on the 300 dev claims", fontsize=12)
+    axes[1].legend(loc="upper left", fontsize=11, frameon=False)
+    fig.suptitle("NLI verdict: fine-tuning lifts every metric — and widens the retrieval gap",
+                 fontsize=14, y=1.00)
+    plt.tight_layout()
+    out = OUTPUT_DIR / "06_nli_metrics_comparison.png"
+    plt.savefig(out, dpi=300, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
+
+def plot_arctic_side_experiment():
+    """Side experiment, not part of the final pipeline: Snowflake
+    Arctic-embed-l-v2.0 vs. BGE-Large, pretrained vs. fine-tuned,
+    nDCG@10 on the dev_monitor split (logs/eval_arctic.log,
+    logs/finetune_arctic.log).
+
+    Arctic-FT edges out BGE-FT here (0.779 vs 0.766) — but dev_monitor was the
+    fine-tuning monitor split, so both fine-tuned numbers are optimistic, and
+    only BGE-FT was re-indexed and confirmed on the held-out dev-test split
+    (0.830, results/eval_dev_test.log). The Arctic result was never validated
+    end to end, so BGE-FT stayed the chosen model.
+    """
+    models = ["Arctic-embed-l-v2.0", "BGE-Large"]
+    pretrained = [0.691, 0.705]
+    finetuned = [0.779, 0.766]
+    validated_bge_ft_devtest = 0.830
+
+    x = np.arange(len(models))
+    bar_w = 0.34
+
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+
+    b1 = ax.bar(x - bar_w / 2, pretrained, bar_w, color=COLOR_DEFAULT,
+                hatch="///", edgecolor="white", label="pretrained")
+    b2 = ax.bar(x + bar_w / 2, finetuned, bar_w, color=COLOR_HIGHLIGHT,
+                edgecolor="white", label="fine-tuned on SciFact")
+
+    for bars in (b1, b2):
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.008,
+                    f"{bar.get_height():.3f}", ha="center", fontsize=11)
+
+    # the Arctic fine-tuned score was never re-scored on truly held-out data
+    ax.text(x[0] + bar_w / 2, finetuned[0] / 2,
+            "never re-scored\non held-out data", ha="center", va="center",
+            fontsize=10, color="white", fontweight="bold")
+    ax.text(x[1] + bar_w / 2, finetuned[1] / 2,
+            "carried forward\n(see dashed line)", ha="center", va="center",
+            fontsize=10, color="white", fontweight="bold")
+
+    ax.axhline(validated_bge_ft_devtest, color="#C0392B", linestyle="--", linewidth=1.8)
+    ax.text(len(models) - 0.5, validated_bge_ft_devtest + 0.008,
+            f"BGE-FT on held-out dev-test: {validated_bge_ft_devtest:.3f}  (validated)",
+            ha="right", fontsize=10, color="#C0392B", fontweight="bold")
+
+    ax.set_xticks(x, models, fontsize=12)
+    ax.set_ylabel("nDCG@10 on dev_monitor (150 claims)", fontsize=12)
+    ax.set_ylim(0, 0.95)
+    ax.set_title("Arctic-embed: a promising side experiment we didn't validate",
+                 fontsize=14, pad=15)
+    ax.legend(loc="upper left", fontsize=11, frameon=False)
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    ax.set_axisbelow(True)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+    ax.text(0.5, -0.16,
+            "dev_monitor was the fine-tuning monitor split — both fine-tuned bars are mild upper bounds.\n"
+            "Only BGE-FT was carried forward and re-scored on the held-out dev-test split.",
+            transform=ax.transAxes, ha="center", fontsize=9.5, color="#555555")
+
+    plt.tight_layout()
+    out = OUTPUT_DIR / "07_arctic_side_experiment.png"
+    plt.savefig(out, dpi=300, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
+
 if __name__ == "__main__":
     plot_main_comparison()
     plot_capacity_story()
     plot_training_curves_zoomed()
     plot_training_curves_full_scale()
     plot_reranking_effect()
+    plot_nli_confusion_matrices()
+    plot_nli_metrics_comparison()
+    plot_arctic_side_experiment()
